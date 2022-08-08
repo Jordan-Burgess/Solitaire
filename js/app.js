@@ -37,43 +37,38 @@ class Deck {
             if(this.drawCounter > 0){
                 this.cards[this.drawCounter-1].select = true;
                 // highlight this card in css
-                this.placeCard(column1); // Set to either columns/sorted suits/or draw deck
+                this._placeCard(column1); // Set to either columns/sorted suits/or draw deck
                 // addEventListener to get place
             }
             else{
                 console.log('No Cards to select')
             }
     }
-    placeCard(place){
+    _placeCard(place){
 
         // If div clicked is draw deck mark as unselected and keep in deck
-        if (place == 'deck div'){ //==deck div
+        if(this._canPlaceCard(place)){
+            let currentCard = this.cards[this.drawCounter-1];
+            this.cards.splice(this.drawCounter-1, 1);
+            currentCard.faceUp = true;
+            currentCard.select = false;
+            place.push(currentCard);
+            this.drawCounter--;
+        }else{
             this.cards[this.drawCounter-1].select = false;
+        }   
+   }  
+    _canPlaceCard(place){
+        if (place == column1 || place == column2 || place == column3 || place == column4 || place == column5 || place == column6 || place == column7){
+            if (this.cards[this.drawCounter-1].color != place[place.length-1].color && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) - 1){
+                return true;
+            }
+        }else if(place == hearts || place == spades || place == clubs || place == diamonds){
+            if (this.cards[this.drawCounter-1].suit == place[place.length-1].suit && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) + 1){
+                return true;
+            }
         }
-        // Else Remove card from deck and add to one of the table columns
-        else{
-            if (place == column1 || place == column2 || place == column3 || place == column4 || place == column5 || place == column6 || place == column7){
-                if (this.cards[this.drawCounter-1].color != place[place.length-1].color && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) - 1){
-                    let currentCard = this.cards[this.drawCounter-1];
-                    this.cards.splice(this.drawCounter-1, 1);
-                    currentCard.select = false
-                    place.push(currentCard);
-                    this.drawCounter--;
-                }else{
-                    this.cards[this.drawCounter-1].select = false;
-                }
-            }else if (place == hearts || place == spades || place == clubs || place == diamonds){
-                if (this.cards[this.drawCounter-1].suit == place[place.length-1].suit && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) + 1){
-                    let currentCard = this.cards[this.drawCounter-1];
-                    this.cards.splice(this.drawCounter-1, 1);
-                    currentCard.select = false
-                    place.push(currentCard);
-                    this.drawCounter--;
-                }else{
-                    this.cards[this.drawCounter-1].select = false;
-                }
-            }  
-        }  
+        return false
     }
 }
 
