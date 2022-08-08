@@ -37,7 +37,7 @@ class Deck {
             if(this.drawCounter > 0){
                 this.cards[this.drawCounter-1].select = true;
                 // highlight this card in css
-                this._placeCard(column1); // Set to either columns/sorted suits/or draw deck
+                this._placeCard(hearts); // Set to either columns/sorted suits/or draw deck
                 // addEventListener to get place
             }
             else{
@@ -124,23 +124,15 @@ solitaireDeck.shuffle()
 
 // console.log(column1)
 
-let testCard1 = new Card('H', '5', 'Red', false, false)
-let testCard2 = new Card('S', '10', 'Black', false, false)
+let testCard1 = new Card('H', '4', 'Red', false, false)
+let testCard2 = new Card('H', '5', 'Red', false, false)
+let testCard3 = new Card('H', '6', 'Red', false, false)
+let testCard4 = new Card('H', '7', 'Red', false, false)
 
 // console.log(testCard)
-column1.push(testCard1)
-column1.push(testCard2)
+hearts.push(testCard1)
+hearts.push(testCard2)
+hearts.push(testCard3)
+hearts.push(testCard4)
 
-console.log(column1)
-
-solitaireDeck.draw()
-solitaireDeck.draw()
-solitaireDeck.draw()
-solitaireDeck.draw()
-solitaireDeck.draw()
-solitaireDeck.draw()
-solitaireDeck.selectCard()
-solitaireDeck.selectCard()
-solitaireDeck.selectCard()
-
-console.log(column1)
+console.log(hearts)
