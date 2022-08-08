@@ -12,8 +12,13 @@ class Deck {
         this.length = length;
         this.cards = cards;
     }
-    draw(){
-        console.log(cards)
+    shuffle(){
+        let currentIndex = this.cards.length, randomIndex;
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [this.cards[currentIndex], this.cards[randomIndex]] = [this.cards[randomIndex], this.cards[currentIndex]];
+        }
     }
 }
 
@@ -27,4 +32,3 @@ for (let i=0; i<suit.length; i++){
         solitaireDeck.cards.push(card);
     }
 }
-
