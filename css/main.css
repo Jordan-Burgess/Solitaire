@@ -1,3 +1,36 @@
 p {
     color: blue;
 }
+
+.game-board {
+    /* background-image: url('./images/faces.png'); */
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: 200px 600px;
+}
+
+.spades{
+    grid-column: 4 / span 1;
+    background-image: url('./images/faces.png');
+}
+
+.sorting-columns {
+    grid-row: 2 / span 6
+}
+
+.card {
+    /* background: url("https://i.imgur.com/CKNzqeH.png");
+    background-size: cover; */
+    border: solid black 2px;
+    margin: 5px;
+}
+
+
+
+.sorting {
+    height: auto;
+    width: auto;
+    background-color: grey;
+    margin: 5px;
+    border: solid black 2px;
+}
