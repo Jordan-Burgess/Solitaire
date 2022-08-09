@@ -48,7 +48,7 @@ class Deck {
             }
         } 
     }
-    selectCard(){
+    selectCardFromDeck(){
             if(this.drawCounter > 0){
                 this.cards[this.drawCounter-1].select = true;
                 // highlight this card in css
@@ -56,7 +56,7 @@ class Deck {
                 // addEventListener to get place
             }
             else{
-                console.log('No Cards to select')
+                console.log('No Cards Drawn')
             }
     }
     _placeCard(place){
@@ -88,6 +88,7 @@ class Deck {
     }
 }
 
+// Card Face Info and Deck Instance
 const suit = ['H', 'S', 'C', 'D',];
 const rank = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K',];
 let solitaireDeck = new Deck([]);
@@ -105,6 +106,7 @@ let sortSuit2 = []
 let sortSuit3 = []
 let sortSuit4 = []
 
+// 52 Card Instances and added to Deck
 for (let i=0; i<suit.length; i++){
     for (let j=0; j<rank.length; j++){
         if(suit[i] == 'H' || suit[i] == 'D'){
@@ -117,48 +119,8 @@ for (let i=0; i<suit.length; i++){
     }
 }
 
-// If user clicks main deck div, then draw a card 
 
+let gameActive = true;
 solitaireDeck.shuffle()
-// console.log(solitaireDeck)
-
-// for(let i =0; i<56; i++){
-//     solitaireDeck.draw()
-//     console.log(i)
-// }
-
-// If User clicks card on draw deck div, mark that card as selected
-// run select card
-
-// If same card is selected marks as not selected 
-// run place card
-
-
-// solitaireDeck.selectCard()
-// solitaireDeck.selectCard()
-// solitaireDeck.selectCard()
-
-// console.log(column1)
-
-let testCard1 = new Card('H', '4', 'Red', false, false)
-let testCard2 = new Card('H', '5', 'Red', false, false)
-let testCard3 = new Card('H', '6', 'Red', false, false)
-let testCard4 = new Card('H', '7', 'Red', false, false)
-
-// console.log(testCard)
-solitaireDeck.draw()
-solitaireDeck.draw()
-solitaireDeck.draw()
-solitaireDeck.draw()
-solitaireDeck.draw()
-solitaireDeck.draw()
-solitaireDeck.selectCard()
-solitaireDeck.selectCard()
-solitaireDeck.selectCard()
-solitaireDeck.selectCard()
-solitaireDeck.selectCard()
-solitaireDeck.selectCard()
-solitaireDeck.selectCard()
-solitaireDeck.selectCard()
-console.log(sortSuit1)
-
+solitaireDeck.setUp()
+solitaireDeck.selectCardFromDeck()
