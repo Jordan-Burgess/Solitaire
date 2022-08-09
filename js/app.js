@@ -52,8 +52,11 @@ class Deck {
             if(this.drawCounter > 0){
                 this.cards[this.drawCounter-1].select = true;
                 // highlight this card in css
-                this._placeCard(sortSuit1); // Set to either columns/sorted suits/or draw deck
-                // addEventListener to get place
+                
+                if (selectPlace){
+                    this._placeCard(selectPlace); 
+                        // Set to either columns/sorted suits/or draw deck}
+                }
             }
             else{
                 console.log('No Cards Drawn')
@@ -105,6 +108,7 @@ let sortSuit1 = []
 let sortSuit2 = []
 let sortSuit3 = []
 let sortSuit4 = []
+let selectPlace = null
 
 // 52 Card Instances and added to Deck
 for (let i=0; i<suit.length; i++){
@@ -121,6 +125,68 @@ for (let i=0; i<suit.length; i++){
 
 
 let gameActive = true;
-solitaireDeck.shuffle()
-solitaireDeck.setUp()
-solitaireDeck.selectCardFromDeck()
+solitaireDeck.shuffle();
+solitaireDeck.setUp();
+
+
+let mainDeck = document.querySelector('.main-deck');
+let drawDeck = document.querySelector('.draw-deck');
+let sortingDeck = document.querySelectorAll('.sorting');
+
+// add event listeners to have draw() run if user clicks main deck div
+mainDeck.addEventListener('click', () =>{
+    solitaireDeck.draw()
+});
+
+// add event listener to have select() run if user clicks draw deck div
+drawDeck.addEventListener('click', () =>{
+    solitaireDeck.selectCardFromDeck()
+});
+
+sortingDeck.forEach(sort => {
+    sort.addEventListener('click', (e) => {
+        let place = e.target.className.split(' ')[1]
+        console.log(place)
+        switch(place){
+            case 'sort-suit1':
+                selectPlace = sortSuit1;
+                break;
+            case 'sort-suit2':
+                selectPlace = sortSuit2;
+                break;
+            case 'sort-suit3':
+                selectPlace = sortSuit3;
+                break;
+            case 'sort-suit4':
+                selectPlace = sortSuit4;
+                break;
+            case 'column1':
+                selectPlace = column1;
+                break;
+            case 'column2':
+                selectPlace = column2;
+                break; 
+            case 'column3':
+                selectPlace = column3;
+                break;
+            case 'column4':
+                selectPlace = column4;
+                break; 
+            case 'column5':
+                selectPlace = column5;
+                break; 
+            case 'column6':
+                selectPlace = column6;
+                break; 
+            case 'column7':
+                selectPlace = column7;
+                break;      
+        }
+        if (solitaireDeck.cards[solitaireDeck.drawCounter].select = true){
+            solitaireDeck.selectCardFromDeck();
+            console.log(selectPlace)
+            console.log(solitaireDeck.cards[solitaireDeck.drawCounter])
+            selectPlace = null;
+        }
+    });
+});
