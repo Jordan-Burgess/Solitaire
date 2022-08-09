@@ -52,7 +52,7 @@ class Deck {
             if(this.drawCounter > 0){
                 this.cards[this.drawCounter-1].select = true;
                 // highlight this card in css
-                this._placeCard(hearts); // Set to either columns/sorted suits/or draw deck
+                this._placeCard(sortSuit1); // Set to either columns/sorted suits/or draw deck
                 // addEventListener to get place
             }
             else{
@@ -74,11 +74,13 @@ class Deck {
    }  
     _canPlaceCard(place){
         if (place == column1 || place == column2 || place == column3 || place == column4 || place == column5 || place == column6 || place == column7){
-            if (this.cards[this.drawCounter-1].color != place[place.length-1].color && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) - 1){
+            if (place == false || this.cards[this.drawCounter-1].color != place[place.length-1].color && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) - 1){
                 return true;
             }
-        }else if(place == hearts || place == spades || place == clubs || place == diamonds){
-            if (this.cards[this.drawCounter-1].suit == place[place.length-1].suit && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) + 1){
+        }else if(place == sortSuit1 || place == sortSuit2 || place == sortSuit3 || place == sortSuit4){
+            if (place == false && this.cards[this.drawCounter-1].rank == 'A'){
+                return true;
+            }else if (place == true && this.cards[this.drawCounter-1].suit == place[place.length-1].suit && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) + 1){
                 return true;
             }
         }
@@ -98,10 +100,10 @@ let column4 = []
 let column5 = []
 let column6 = []
 let column7 = []
-let hearts = []
-let spades = []
-let clubs = []
-let diamonds = []
+let sortSuit1 = []
+let sortSuit2 = []
+let sortSuit3 = []
+let sortSuit4 = []
 
 for (let i=0; i<suit.length; i++){
     for (let j=0; j<rank.length; j++){
@@ -144,13 +146,19 @@ let testCard3 = new Card('H', '6', 'Red', false, false)
 let testCard4 = new Card('H', '7', 'Red', false, false)
 
 // console.log(testCard)
-hearts.push(testCard1)
-hearts.push(testCard2)
-hearts.push(testCard3)
-hearts.push(testCard4)
+solitaireDeck.draw()
+solitaireDeck.draw()
+solitaireDeck.draw()
+solitaireDeck.draw()
+solitaireDeck.draw()
+solitaireDeck.draw()
+solitaireDeck.selectCard()
+solitaireDeck.selectCard()
+solitaireDeck.selectCard()
+solitaireDeck.selectCard()
+solitaireDeck.selectCard()
+solitaireDeck.selectCard()
+solitaireDeck.selectCard()
+solitaireDeck.selectCard()
+console.log(sortSuit1)
 
-console.log(hearts)
-
-solitaireDeck.setUp()
-console.log(column1)
-console.log(solitaireDeck.cards.length)
