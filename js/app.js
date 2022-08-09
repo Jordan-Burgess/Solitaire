@@ -51,7 +51,9 @@ class Deck {
     }
     selectCardFromDeck(){
             if(this.drawCounter > 0){
+                
                 this.cards[this.drawCounter-1].select = true;
+                // 
                 // highlight this card in css
                 
                 if (selectPlace){
@@ -96,7 +98,7 @@ let mainDeck = document.querySelector('.main-deck');
 let drawDiv = document.querySelector('.draw-deck');
 let sortingDeck = document.querySelectorAll('.sorting');
 
-console.log(sortingDeck)
+
 
 // Card Face Info and Deck Instance
 const suit = ['H', 'S', 'C', 'D',];
@@ -140,17 +142,19 @@ solitaireDeck.shuffle();
 solitaireDeck.setUp();
 
 
-
+console.log(solitaireDeck.cards)
 
 
 
 
 
 function addCards() {
+
+
+
     
     for (let i=4; i<sortingArrayColumns.length;i++){
         for (let j=0; j<sortingArrayColumns[i].length; j++){
-            console.log(sortingArrayColumns[i])
                 let tempElem = document.createElement('div')
                 if (sortingArrayColumns[i][j].faceUp == false){
                     tempElem.innerText = `Face Down`
@@ -172,12 +176,15 @@ function addCards() {
 // add event listeners to have draw() run if user clicks main deck div
 mainDeck.addEventListener('click', () =>{
     solitaireDeck.draw()
-    drawDiv.innerText = `${solitaireDeck.cards[solitaireDeck.drawCounter].suit}${solitaireDeck.cards[solitaireDeck.drawCounter].rank}`
+    if (solitaireDeck.drawCounter != solitaireDeck.cards.length){
+        drawDiv.innerText = `${solitaireDeck.cards[solitaireDeck.drawCounter-1].suit}${solitaireDeck.cards[solitaireDeck.drawCounter-1].rank}`
+    }
 });
 
 // add event listener to have select() run if user clicks draw deck div
 drawDiv.addEventListener('click', () =>{
     solitaireDeck.selectCardFromDeck()
+    console.log(solitaireDeck.cards)
 });
 
 sortingDeck.forEach(sort => {
@@ -219,11 +226,12 @@ sortingDeck.forEach(sort => {
                 selectPlace = column7;
                 break;      
         }
-        if (solitaireDeck.cards[solitaireDeck.drawCounter].select = true){
+        if (solitaireDeck.cards[solitaireDeck.drawCounter-1].select == true){
             solitaireDeck.selectCardFromDeck();
             console.log(selectPlace)
-            console.log(solitaireDeck.cards[solitaireDeck.drawCounter])
+            console.log(solitaireDeck.cards[solitaireDeck.drawCounter-1])
             selectPlace = null;
+            console.log(sortSuit1)
         }
     });
 });
