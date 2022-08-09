@@ -29,7 +29,6 @@ class Deck {
             
         }else{
             // Display this card on Draw deck div
-            console.log(this.cards[this.drawCounter]);
             this.drawCounter++;
         }
     }
@@ -47,6 +46,8 @@ class Deck {
                 this.drawCounter--;
             }
         } 
+        addCards()
+        
     }
     selectCardFromDeck(){
             if(this.drawCounter > 0){
@@ -91,9 +92,16 @@ class Deck {
     }
 }
 
+let mainDeck = document.querySelector('.main-deck');
+let drawDiv = document.querySelector('.draw-deck');
+let sortingDeck = document.querySelectorAll('.sorting');
+
+console.log(sortingDeck)
+
 // Card Face Info and Deck Instance
 const suit = ['H', 'S', 'C', 'D',];
 const rank = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K',];
+
 let solitaireDeck = new Deck([]);
 
 // Main table columns
@@ -108,6 +116,9 @@ let sortSuit1 = []
 let sortSuit2 = []
 let sortSuit3 = []
 let sortSuit4 = []
+
+sortingArrayColumns = [sortSuit1, sortSuit2, sortSuit3, sortSuit4, column1, column2, column3, column4, column5, column6, column7,]
+
 let selectPlace = null
 
 // 52 Card Instances and added to Deck
@@ -124,22 +135,48 @@ for (let i=0; i<suit.length; i++){
 }
 
 
-let gameActive = true;
+// let gameActive = true;
 solitaireDeck.shuffle();
 solitaireDeck.setUp();
 
 
-let mainDeck = document.querySelector('.main-deck');
-let drawDeck = document.querySelector('.draw-deck');
-let sortingDeck = document.querySelectorAll('.sorting');
+
+
+
+
+
+
+function addCards() {
+    
+    for (let i=4; i<sortingArrayColumns.length;i++){
+        for (let j=0; j<sortingArrayColumns[i].length; j++){
+            console.log(sortingArrayColumns[i])
+                let tempElem = document.createElement('div')
+                if (sortingArrayColumns[i][j].faceUp == false){
+                    tempElem.innerText = `Face Down`
+                }else{
+                    tempElem.innerText = `${sortingArrayColumns[i][j].suit}${sortingArrayColumns[i][j].rank}`; 
+            }
+            sortingDeck[i].appendChild(tempElem);
+        }
+            
+        
+    
+        
+    }
+}
+
+
+
 
 // add event listeners to have draw() run if user clicks main deck div
 mainDeck.addEventListener('click', () =>{
     solitaireDeck.draw()
+    drawDiv.innerText = `${solitaireDeck.cards[solitaireDeck.drawCounter].suit}${solitaireDeck.cards[solitaireDeck.drawCounter].rank}`
 });
 
 // add event listener to have select() run if user clicks draw deck div
-drawDeck.addEventListener('click', () =>{
+drawDiv.addEventListener('click', () =>{
     solitaireDeck.selectCardFromDeck()
 });
 
@@ -190,3 +227,24 @@ sortingDeck.forEach(sort => {
         }
     });
 });
+
+// console.log(column7)
+
+// Append divs to column for each element in column list
+
+// console.log(sortingDeck.length)
+
+
+// let drawCard = document.createElement('div')
+// drawCard.innerText = `${solitaireDeck.cards[solitaireDeck.drawCounter].suit}${solitaireDeck.cards[solitaireDeck.drawCounter].rank}`
+// drawDeck.appendChild(drawCard)
+
+
+
+
+// Create conditionals for board play.
+// User can select on any item in a column if it is faceup,
+// User can only select on last item in sorted suits
+
+
+// Always show last item of list for sorted suits
