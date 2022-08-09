@@ -33,6 +33,21 @@ class Deck {
             this.drawCounter++;
         }
     }
+    setUp(){
+        for (let i=7;i>=1;i--){
+            for(let j=1;j<=i;j++){
+                this.draw()
+                let currentCard = this.cards[this.drawCounter-1];
+                this.cards.splice(this.drawCounter-1, 1);
+                if (j==i){
+                    currentCard.faceUp = true;
+                }
+                let variable = `column${i}`
+                eval(variable).push(currentCard);
+                this.drawCounter--;
+            }
+        } 
+    }
     selectCard(){
             if(this.drawCounter > 0){
                 this.cards[this.drawCounter-1].select = true;
@@ -136,3 +151,6 @@ hearts.push(testCard3)
 hearts.push(testCard4)
 
 console.log(hearts)
+
+solitaireDeck.setUp()
+console.log(column1)
