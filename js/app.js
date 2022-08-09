@@ -61,7 +61,6 @@ class Deck {
     }
     _placeCard(place){
 
-        // If div clicked is draw deck mark as unselected and keep in deck
         if(this._canPlaceCard(place)){
             let currentCard = this.cards[this.drawCounter-1];
             this.cards.splice(this.drawCounter-1, 1);
@@ -154,3 +153,4 @@ console.log(hearts)
 
 solitaireDeck.setUp()
 console.log(column1)
+console.log(solitaireDeck.cards.length)
