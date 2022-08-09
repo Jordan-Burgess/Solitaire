@@ -49,7 +49,7 @@ class Deck {
         addCards()
         
     }
-    selectCardFromDeck(){
+    selectCardFromDeck(e){
             if(this.drawCounter > 0){
                 
                 this.cards[this.drawCounter-1].select = true;
@@ -57,7 +57,7 @@ class Deck {
                 // highlight this card in css
                 
                 if (selectPlace){
-                    this._placeCard(selectPlace); 
+                    this._placeCard(selectPlace, e); 
                         // Set to either columns/sorted suits/or draw deck}
                 }
             }
@@ -65,15 +65,23 @@ class Deck {
                 console.log('No Cards Drawn')
             }
     }
-    _placeCard(place){
+    _placeCard(place, e){
 
         if(this._canPlaceCard(place)){
             let currentCard = this.cards[this.drawCounter-1];
             this.cards.splice(this.drawCounter-1, 1);
             currentCard.faceUp = true;
             currentCard.select = false;
+            
+
+            let placeCard = document.createElement('div');
+            placeCard.innerText = `${currentCard.suit}${currentCard.rank}`
+            e.target.appendChild(placeCard);
+
             place.push(currentCard);
             this.drawCounter--;
+
+
         }else{
             this.cards[this.drawCounter-1].select = false;
         }   
@@ -144,15 +152,7 @@ solitaireDeck.setUp();
 
 console.log(solitaireDeck.cards)
 
-
-
-
-
-function addCards() {
-
-
-
-    
+function addCards() {    
     for (let i=4; i<sortingArrayColumns.length;i++){
         for (let j=0; j<sortingArrayColumns[i].length; j++){
                 let tempElem = document.createElement('div')
@@ -163,10 +163,6 @@ function addCards() {
             }
             sortingDeck[i].appendChild(tempElem);
         }
-            
-        
-    
-        
     }
 }
 
@@ -175,6 +171,10 @@ function addCards() {
 
 // add event listeners to have draw() run if user clicks main deck div
 mainDeck.addEventListener('click', () =>{
+    if (drawDiv.innerText){
+        solitaireDeck.cards[solitaireDeck.drawCounter-1].select = false
+    }
+    
     solitaireDeck.draw()
     if (solitaireDeck.drawCounter != solitaireDeck.cards.length){
         drawDiv.innerText = `${solitaireDeck.cards[solitaireDeck.drawCounter-1].suit}${solitaireDeck.cards[solitaireDeck.drawCounter-1].rank}`
@@ -227,11 +227,11 @@ sortingDeck.forEach(sort => {
                 break;      
         }
         if (solitaireDeck.cards[solitaireDeck.drawCounter-1].select == true){
-            solitaireDeck.selectCardFromDeck();
+            solitaireDeck.selectCardFromDeck(e);
             console.log(selectPlace)
             console.log(solitaireDeck.cards[solitaireDeck.drawCounter-1])
             selectPlace = null;
-            console.log(sortSuit1)
+
         }
     });
 });
