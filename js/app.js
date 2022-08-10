@@ -72,14 +72,15 @@ class Deck {
             this.cards.splice(this.drawCounter-1, 1);
             currentCard.faceUp = true;
             currentCard.select = false;
-            let suit = e.target.className.split(' ')[1]
+            console.log(e)
+            let suit = e.className.split(' ')[1]
             if (suit == 'sort-suit1' || suit == 'sort-suit2' || suit == 'sort-suit3' || suit == 'sort-suit4'){
-                e.target.innerText = `${currentCard.suit}${currentCard.rank}`
+                e.innerText = `${currentCard.suit}${currentCard.rank}`
             }else {
                 let placeCard = document.createElement('div');
                 placeCard.innerText = `${currentCard.suit}${currentCard.rank}`
                 placeCard.className = 'card';
-                e.target.appendChild(placeCard);
+                e.appendChild(placeCard);
             }
 
             place.push(currentCard);
@@ -153,24 +154,81 @@ for (let i=0; i<suit.length; i++){
         }
     }
 }
-let selectList = []
+// let selectList = []
+
+// let idx = 0;
+
+// function moveCardDivs(e) {
+
+    
+//     selectList.push(e.target)
+    
+
+//             while (selectList[idx].nextSibling != null){
+//                 selectList.push(selectList[idx].nextSibling);
+//                 idx++;
+//             }
+
+//             console.log(selectList)
+
+// }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     let cards = document.querySelectorAll('.card');
     cards.forEach(card => {
-        card.addEventListener('click', () => {
+        card.addEventListener('click', (e) => {
+
+            findDivColumn(card.parentNode)
+            console.log(selectPlace)
+            console.log([...card.parentNode.childNodes].indexOf(card))
+            let idx = [...card.parentNode.childNodes].indexOf(card)
+            console.log(selectPlace[idx])
+
+            if(selectPlace[idx].faceUp != false){
+                selectPlace[idx].select = true
+                console.log(selectPlace[idx])
+            }
+
+
+
+
             
-            selectList.push(card)
-            console.log(selectList)
+            
+            // if(e.target.innerText != 'Face Down'){
+            //     moveCardDivs(e)
+            // }
+        })
+    });
+});
+
+// console.log(selectList)
+
+
+
+         //// Push selected card and all child elements to list
+
+         //// When div element is clicked, find that index placing in the column it is. Update column card
+
+
+            //// Only select card if it is faceUp
+            ///// check nextSibling
+            ///// Also move column cards
+            
+
+            
 
             /// Get the element clicked and all the next siblings if element has. Add to list. 
             // console.log(selectList[0].nextSibling)
             
-        });
-    });
-});
 
-console.log(selectList)
+// let cards = document.querySelectorAll('.card');
+// // Find the parent div and the index for each card clicked
+// cards.forEach(card => {
+    
+// })
+
+
 
 // let gameActive = true;
 solitaireDeck.shuffle();
@@ -229,9 +287,8 @@ drawDiv.addEventListener('click', () =>{
     console.log(solitaireDeck.cards)
 });
 
-sortingDeck.forEach(sort => {
-    sort.addEventListener('click', (e) => {
-        let place = e.target.className.split(' ')[1]
+function findDivColumn(e) {
+    let place = e.className.split(' ')[1]
         switch(place){
             case 'sort-suit1':
                 selectPlace = sortSuit1;
@@ -267,8 +324,13 @@ sortingDeck.forEach(sort => {
                 selectPlace = column7;
                 break;      
         }
+}
+
+sortingDeck.forEach(sort => {
+    sort.addEventListener('click', (e) => {
+        findDivColumn(e.target)
         if (solitaireDeck.drawCounter >0 && solitaireDeck.cards[solitaireDeck.drawCounter-1].select == true){
-            solitaireDeck.selectCardFromDeck(e);
+            solitaireDeck.selectCardFromDeck(e.target);
             console.log(selectPlace)
             selectPlace = null;
         }
