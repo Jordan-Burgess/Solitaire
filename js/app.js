@@ -162,19 +162,29 @@ function _placeCard(place, e){
             drawDiv.innerText = `${solitaireDeck.cards[solitaireDeck.drawCounter-1].suit}${solitaireDeck.cards[solitaireDeck.drawCounter-1].rank}`;
             };
         };
-
-        let currentCard = selectedCard;
-        selectedCard = null;
-        currentCard.faceUp = true;
+        if(Array.isArray(selectedCard)){
+            for(let i=0; i<selectedCard.length; i++){
+                let currentCard = selectedCard[i];
+                let cardElem = document.createElement('div');
+                cardElem.innerText = `${currentCard.suit}${currentCard.rank}`;
+                e.target.append(cardElem)
+                place.push(currentCard)
+            }
+            selectedCard = null;
+        }else{
+            let currentCard = selectedCard;
+            selectedCard = null;
+            currentCard.faceUp = true;
         
 
-        let cardElem = document.createElement('div');
-        cardElem.innerText = `${currentCard.suit}${currentCard.rank}`;
-        cardElem.className = 'card';
-        console.log(e.target);
-        e.target.append(cardElem);
+            let cardElem = document.createElement('div');
+            cardElem.innerText = `${currentCard.suit}${currentCard.rank}`;
+            cardElem.className = 'card';
+            console.log(e.target);
+            e.target.append(cardElem);
 
-        place.push(currentCard);
+            place.push(currentCard);
+        }
         selectedPlace = null;
         return true;
 
@@ -186,14 +196,23 @@ function _placeCard(place, e){
 };  
 
 function _canPlaceCard(place){
+    let cardRank
+    let cardSuit
+    let cardColor
+
+    cardRank = selectedCard.rank || selectedCard[0].rank;
+    cardSuit = selectedCard.suit || selectedCard[0].suit;
+    cardColor = selectedCard.color || selectedCard[0].color;
+
+
     if (place == column1 || place == column2 || place == column3 || place == column4 || place == column5 || place == column6 || place == column7){
-        if (place.length == 0 || selectedCard.color != place[place.length-1].color && rank.indexOf(selectedCard.rank) == rank.indexOf(place[place.length-1].rank) - 1){
+        if (place.length == 0 || cardColor != place[place.length-1].color && rank.indexOf(cardRank) == rank.indexOf(place[place.length-1].rank) - 1){
             return true;
         };
     }else if(place == sortSuit1 || place == sortSuit2 || place == sortSuit3 || place == sortSuit4){
-        if (place.length == 0 && selectedCard.rank == 'A'){
+        if (place.length == 0 && cardRank == 'A'){
             return true;
-        }else if (place.length > 0 && selectedCard.suit == place[place.length-1].suit && rank.indexOf(selectedCard.rank) == rank.indexOf(place[place.length-1].rank) + 1){
+        }else if (place.length > 0 && cardSuit == place[place.length-1].suit && rank.indexOf(cardRank) == rank.indexOf(place[place.length-1].rank) + 1){
             return true;
         };
     };
@@ -206,13 +225,12 @@ function getSelectedCards (e){
     findColumnArray(divClass);
     let column = selectedPlace;
     selectedPlace = null;
-    console.log(column);
 
     // Find index of clicked card
     let idx = [...e.target.parentNode.childNodes].indexOf(e.target)
-    console.log(idx)
 
-    selectedCard = column[idx]
+    
+    selectedCard = column.slice(idx)
     console.log(selectedCard)
 
 }
@@ -223,8 +241,6 @@ solitaireDeck.setUp(sortingColumnDivs);
 
 console.log(sortingArrayColumns);
 console.log(solitaireDeck.cards);
-
-
 
 
 
@@ -242,8 +258,8 @@ sortingColumnDivs.forEach(place => {
         if(selectedCard != null){
             let divClass = e.target.className.split(' ')[1]
             findColumnArray(divClass);
+            _placeCard(selectedPlace, e);
         }
-        _placeCard(selectedPlace, e);
     });
 });
 
@@ -251,7 +267,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let cards = document.querySelectorAll('.card');
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
-            getSelectedCards(e);
+            e.stopPropagation();
+            if(card.innerText != 'Face Down'){
+                getSelectedCards(e);
+            }
         })
     });
 });
@@ -260,13 +279,16 @@ document.addEventListener('DOMNodeInserted', () => {
     let cards = document.querySelectorAll('.card');
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
-            getSelectedCards(e);
+            e.stopPropagation();
+            if(card.innerText != 'Face Down'){
+                getSelectedCards(e);
+            }
         })
     })
 })
 
 
-/// Can only select Face Up card
+
 
 /// If user clicks on another column after,  cards will be placed based on condition. 
 
