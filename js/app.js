@@ -78,6 +78,7 @@ class Deck {
             }else {
                 let placeCard = document.createElement('div');
                 placeCard.innerText = `${currentCard.suit}${currentCard.rank}`
+                placeCard.className = 'card';
                 e.target.appendChild(placeCard);
             }
 
@@ -92,7 +93,7 @@ class Deck {
 
         }else{
             this.cards[this.drawCounter-1].select = false;
-        }   
+        } 
    }  
     _canPlaceCard(place){
         if (place == column1 || place == column2 || place == column3 || place == column4 || place == column5 || place == column6 || place == column7){
@@ -113,6 +114,7 @@ class Deck {
 let mainDeck = document.querySelector('.main-deck');
 let drawDiv = document.querySelector('.draw-deck');
 let sortingDeck = document.querySelectorAll('.sorting');
+
 
 
 
@@ -151,7 +153,24 @@ for (let i=0; i<suit.length; i++){
         }
     }
 }
+let selectList = []
 
+document.addEventListener('DOMContentLoaded', () => {
+    let cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            
+            selectList.push(card)
+            console.log(selectList)
+
+            /// Get the element clicked and all the next siblings if element has. Add to list. 
+            // console.log(selectList[0].nextSibling)
+            
+        });
+    });
+});
+
+console.log(selectList)
 
 // let gameActive = true;
 solitaireDeck.shuffle();
@@ -169,11 +188,26 @@ function addCards() {
                 }else{
                     tempElem.innerText = `${sortingArrayColumns[i][j].suit}${sortingArrayColumns[i][j].rank}`; 
             }
+            tempElem.className = 'card';
             sortingDeck[i].appendChild(tempElem);
         }
     }
 }
 
+// Need to get card nodes and add event listener to see if user clicked it
+// Get card nodes
+
+
+
+
+
+//     column.addEventListener('DOMNodeInserted', () => {
+//         // User will click on card in a column
+//         // Get the DOM Node of what user clicked and every one below
+//         // Use the _placeCard function to place card in another column.
+//         // If card is 1 card, can check suit conditions, otherwise just check column conditions.
+    
+// })
 
 // add event listeners to have draw() run if user clicks main deck div
 mainDeck.addEventListener('click', () =>{
@@ -198,7 +232,6 @@ drawDiv.addEventListener('click', () =>{
 sortingDeck.forEach(sort => {
     sort.addEventListener('click', (e) => {
         let place = e.target.className.split(' ')[1]
-        console.log(place)
         switch(place){
             case 'sort-suit1':
                 selectPlace = sortSuit1;
@@ -234,7 +267,7 @@ sortingDeck.forEach(sort => {
                 selectPlace = column7;
                 break;      
         }
-        if (solitaireDeck.cards[solitaireDeck.drawCounter-1].select == true){
+        if (solitaireDeck.drawCounter >0 && solitaireDeck.cards[solitaireDeck.drawCounter-1].select == true){
             solitaireDeck.selectCardFromDeck(e);
             console.log(selectPlace)
             selectPlace = null;
