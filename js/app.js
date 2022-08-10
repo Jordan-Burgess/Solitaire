@@ -1,9 +1,8 @@
 class Card {
-    constructor(suit, rank, color, faceUp, select){
+    constructor(suit, rank, color, faceUp){
         this.suit = suit;
         this.rank = rank;
         this.faceUp = faceUp;
-        this.select = select;
         this.color = color;
     }
 }
@@ -24,11 +23,15 @@ class Deck {
     draw(){
         if (this.drawCounter == this.cards.length){
             //Display blank card on Main deck div
+            drawDiv.innerText = ''
             console.log("Going back to the beginning");
-            this.drawCounter = 1;
+            this.drawCounter = 0;
             
         }else{
-            // Display this card on Draw deck div
+            if(this.drawCounter >= 0 && this.drawCounter < this.cards.length){
+                drawDiv.innerText = `${this.cards[this.drawCounter].suit}${this.cards[this.drawCounter].rank}`
+                console.log(this.drawCounter)
+            }
             this.drawCounter++;
         }
     }
@@ -58,19 +61,21 @@ class Deck {
                 columns[i].appendChild(tempElem);
             }
         }
-        
+        this.drawCounter = 0;
+        drawDiv.innerText = ''
     }
-    selectCardFromDeck(e){
+    selectCardFromDeck(e=null){
         if(this.drawCounter > 0){
                 
             selectedCard = this.cards[this.drawCounter-1];
+            console.log(selectedCard);
             // 
             // highlight this card in css
                 
-            if (selectPlace){
-                _placeCard(selectPlace, e); 
+            if (selectedPlace){
+                _placeCard(selectedPlace, e); 
                 // Set to either columns/sorted suits/or draw deck}
-                if (_placeCard(selectPlace, e) == true){
+                if (_placeCard(selectedPlace, e) == true){
                     if (this.drawCounter == 0){
                         drawDiv.innerText = ''
                     }else{
@@ -84,19 +89,86 @@ class Deck {
     }
 }
 
-
-
-
+// Query Selector of main board Areas
 let mainDeck = document.querySelector('.main-deck');
 let drawDiv = document.querySelector('.draw-deck');
-let sortingDeck = document.querySelectorAll('.sorting');
+let sortingColumnDivs = document.querySelectorAll('.sorting');
 
 let selectedCard = null
+let selectedPlace = null
 
+// Columns for card Data
+let column1 = []
+let column2 = []
+let column3 = []
+let column4 = []
+let column5 = []
+let column6 = []
+let column7 = []
+let sortSuit1 = []
+let sortSuit2 = []
+let sortSuit3 = []
+let sortSuit4 = []
+let sortingArrayColumns = [sortSuit1, sortSuit2, sortSuit3, sortSuit4, column1, column2, column3, column4, column5, column6, column7,]
 
+// Card Face Information
+const suit = ['H', 'S', 'C', 'D',];
+const rank = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K',];
+
+// Create 52 card and 1 deck instances
+let solitaireDeck = new Deck([]);
+for (let i=0; i<suit.length; i++){
+    for (let j=0; j<rank.length; j++){
+        if(suit[i] == 'H' || suit[i] == 'D'){
+            let card = new Card(suit[i], rank[j], 'Red', false, false);
+            solitaireDeck.cards.push(card);
+        }else{
+            let card = new Card(suit[i], rank[j], 'Black', false, false);
+            solitaireDeck.cards.push(card);
+        }
+    }
+}
+
+function findDivColumn(e) {
+    let place = e.className.split(' ')[1]
+    switch(place){
+        case 'sort-suit1':
+            selectedPlace = sortSuit1;
+            break;
+        case 'sort-suit2':
+            selectedPlace = sortSuit2;
+            break;
+        case 'sort-suit3':
+            selectedPlace = sortSuit3;
+            break;
+        case 'sort-suit4':
+            selectedPlace = sortSuit4;
+            break;
+        case 'column1':
+            selectedPlace = column1;
+            break;
+        case 'column2':
+            selectedPlace = column2;
+            break; 
+        case 'column3':
+            selectedPlace = column3;
+            break;
+        case 'column4':
+            selectedPlace = column4;
+            break; 
+        case 'column5':
+            selectedPlace = column5;
+            break; 
+        case 'column6':
+            selectedPlace = column6;
+            break; 
+        case 'column7':
+            selectedPlace = column7;
+            break;      
+    }
+}
 
 function _placeCard(place, e){
-
     if(_canPlaceCard(place)){
         if (solitaireDeck.includes(selectedCard)){
             solitaireDeck.cards.splice(solitaireDeck.drawCounter-1, 1); // Remove current card from deck permanently if in deck.
@@ -126,7 +198,6 @@ function _placeCard(place, e){
     } 
 }  
 
-
 function _canPlaceCard(place){
     if (place == column1 || place == column2 || place == column3 || place == column4 || place == column5 || place == column6 || place == column7){
         if (place.length < 1 || selectedCard.color != place[place.length-1].color && rank.indexOf(selectedCard.rank) == rank.indexOf(place[place.length-1].rank) - 1){
@@ -141,91 +212,57 @@ function _canPlaceCard(place){
     }
     return false
 }
-
-
-
-// Card Face Info and Deck Instance
-const suit = ['H', 'S', 'C', 'D',];
-const rank = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K',];
-
-let solitaireDeck = new Deck([]);
-
-// Main table columns
-let column1 = []
-let column2 = []
-let column3 = []
-let column4 = []
-let column5 = []
-let column6 = []
-let column7 = []
-let sortSuit1 = []
-let sortSuit2 = []
-let sortSuit3 = []
-let sortSuit4 = []
-
-sortingArrayColumns = [sortSuit1, sortSuit2, sortSuit3, sortSuit4, column1, column2, column3, column4, column5, column6, column7,]
-
-let selectPlace = null
-
-// 52 Card Instances and added to Deck
-for (let i=0; i<suit.length; i++){
-    for (let j=0; j<rank.length; j++){
-        if(suit[i] == 'H' || suit[i] == 'D'){
-            let card = new Card(suit[i], rank[j], 'Red', false, false);
-            solitaireDeck.cards.push(card);
-        }else{
-            let card = new Card(suit[i], rank[j], 'Black', false, false);
-            solitaireDeck.cards.push(card);
-        }
-    }
-}
-// let selectList = []
-
-// let idx = 0;
-
-// function moveCardDivs(e) {
-
-    
-//     selectList.push(e.target)
     
 
-//             while (selectList[idx].nextSibling != null){
-//                 selectList.push(selectList[idx].nextSibling);
-//                 idx++;
+solitaireDeck.shuffle();
+solitaireDeck.setUp(sortingColumnDivs)
+
+console.log(sortingArrayColumns)
+console.log(solitaireDeck.cards)
+console.log(0 > -1)
+
+
+mainDeck.addEventListener('click', () =>{
+    selectedCard = null
+    solitaireDeck.draw()
+});
+
+drawDiv.addEventListener('click', () =>{
+    solitaireDeck.selectCardFromDeck()
+});
+
+
+
+
+
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     let cards = document.querySelectorAll('.card');
+//     cards.forEach(card => {
+//         card.addEventListener('click', (e) => {
+
+//             findDivColumn(card.parentNode)
+//             console.log(selectedPlace)
+//             console.log([...card.parentNode.childNodes].indexOf(card))
+//             let idx = [...card.parentNode.childNodes].indexOf(card)
+//             console.log(selectedPlace[idx])
+
+//             if(selectedPlace[idx].faceUp != false){
+//                 selectedPlace[idx].select = true
+//                 console.log(selectPlace[idx])
 //             }
 
-//             console.log(selectList)
-
-// }
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    let cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-        card.addEventListener('click', (e) => {
-
-            findDivColumn(card.parentNode)
-            console.log(selectPlace)
-            console.log([...card.parentNode.childNodes].indexOf(card))
-            let idx = [...card.parentNode.childNodes].indexOf(card)
-            console.log(selectPlace[idx])
-
-            if(selectPlace[idx].faceUp != false){
-                selectPlace[idx].select = true
-                console.log(selectPlace[idx])
-            }
-
 
 
 
             
             
-            // if(e.target.innerText != 'Face Down'){
-            //     moveCardDivs(e)
-            // }
-        })
-    });
-});
+//             // if(e.target.innerText != 'Face Down'){
+//             //     moveCardDivs(e)
+//             // }
+//         })
+//     });
+// });
 
 // console.log(selectList)
 
@@ -256,26 +293,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // let gameActive = true;
-solitaireDeck.shuffle();
-solitaireDeck.setUp(sortingDeck);
 
 
-console.log(solitaireDeck.cards)
-
-function addCards() {    
-    for (let i=4; i<sortingArrayColumns.length;i++){
-        for (let j=0; j<sortingArrayColumns[i].length; j++){
-                let tempElem = document.createElement('div')
-                if (sortingArrayColumns[i][j].faceUp == false){
-                    tempElem.innerText = `Face Down`
-                }else{
-                    tempElem.innerText = `${sortingArrayColumns[i][j].suit}${sortingArrayColumns[i][j].rank}`; 
-            }
-            tempElem.className = 'card';
-            sortingDeck[i].appendChild(tempElem);
-        }
-    }
-}
+// function addCards() {    
+//     for (let i=4; i<sortingArrayColumns.length;i++){
+//         for (let j=0; j<sortingArrayColumns[i].length; j++){
+//                 let tempElem = document.createElement('div')
+//                 if (sortingArrayColumns[i][j].faceUp == false){
+//                     tempElem.innerText = `Face Down`
+//                 }else{
+//                     tempElem.innerText = `${sortingArrayColumns[i][j].suit}${sortingArrayColumns[i][j].rank}`; 
+//             }
+//             tempElem.className = 'card';
+//             sortingDeck[i].appendChild(tempElem);
+//         }
+//     }
+// }
 
 // Need to get card nodes and add event listener to see if user clicked it
 // Get card nodes
@@ -293,71 +326,20 @@ function addCards() {
 // })
 
 // add event listeners to have draw() run if user clicks main deck div
-mainDeck.addEventListener('click', () =>{
-  if (drawDiv.innerText){
-        solitaireDeck.cards[solitaireDeck.drawCounter-1].select = false
-    }
-    
-    solitaireDeck.draw()
-    if (solitaireDeck.drawCounter > 0){
-        console.log(solitaireDeck.drawCounter)
-        console.log(solitaireDeck.cards.length-1)
-        drawDiv.innerText = `${solitaireDeck.cards[solitaireDeck.drawCounter-1].suit}${solitaireDeck.cards[solitaireDeck.drawCounter-1].rank}`
-    }
-});
+
 
 // add event listener to have select() run if user clicks draw deck div
-drawDiv.addEventListener('click', () =>{
-    solitaireDeck.selectCardFromDeck()
-    console.log(solitaireDeck.cards)
-});
 
-function findDivColumn(e) {
-    let place = e.className.split(' ')[1]
-        switch(place){
-            case 'sort-suit1':
-                selectPlace = sortSuit1;
-                break;
-            case 'sort-suit2':
-                selectPlace = sortSuit2;
-                break;
-            case 'sort-suit3':
-                selectPlace = sortSuit3;
-                break;
-            case 'sort-suit4':
-                selectPlace = sortSuit4;
-                break;
-            case 'column1':
-                selectPlace = column1;
-                break;
-            case 'column2':
-                selectPlace = column2;
-                break; 
-            case 'column3':
-                selectPlace = column3;
-                break;
-            case 'column4':
-                selectPlace = column4;
-                break; 
-            case 'column5':
-                selectPlace = column5;
-                break; 
-            case 'column6':
-                selectPlace = column6;
-                break; 
-            case 'column7':
-                selectPlace = column7;
-                break;      
-        }
-}
 
-sortingDeck.forEach(sort => {
+
+
+sortingColumnDivs.forEach(sort => {
     sort.addEventListener('click', (e) => {
         findDivColumn(e.target)
         if (solitaireDeck.drawCounter >0 && solitaireDeck.cards[solitaireDeck.drawCounter-1].select == true){
             solitaireDeck.selectCardFromDeck(e.target);
             console.log(selectPlace)
-            selectPlace = null;
+            selectedPlace = null;
         }
     });
 });
@@ -382,3 +364,12 @@ sortingDeck.forEach(sort => {
 
 
 // Always show last item of list for sorted suits
+
+//             while (selectList[idx].nextSibling != null){
+//                 selectList.push(selectList[idx].nextSibling);
+//                 idx++;
+//             }
+
+//             console.log(selectList)
+
+// }
