@@ -200,12 +200,32 @@ function _canPlaceCard(place){
     return false;
 };
     
+function getSelectedCards (e){
+    // Find Column of clicked table card
+    let divClass = e.target.parentNode.className.split(' ')[1];
+    findColumnArray(divClass);
+    let column = selectedPlace;
+    selectedPlace = null;
+    console.log(column);
+
+    // Find index of clicked card
+    let idx = [...e.target.parentNode.childNodes].indexOf(e.target)
+    console.log(idx)
+
+    selectedCard = column[idx]
+    console.log(selectedCard)
+
+}
+
 
 solitaireDeck.shuffle();
 solitaireDeck.setUp(sortingColumnDivs);
 
 console.log(sortingArrayColumns);
 console.log(solitaireDeck.cards);
+
+
+
 
 
 mainDeck.addEventListener('click', () =>{
@@ -227,45 +247,23 @@ sortingColumnDivs.forEach(place => {
     });
 });
 
-
-
-/// If user clicks card in columns an array of those cards will be added to selected card. 
-
-// Find column and index of selected divs to retrieve data 
 document.addEventListener('DOMContentLoaded', () => {
     let cards = document.querySelectorAll('.card');
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
-            let divClass = e.target.parentNode.className.split(' ')[1]
-            findColumnArray(divClass)
-            let column = selectedPlace;
-            selectedPlace = null;
-            console.log(column)
-
-
-            // console.log([...card.parentNode.childNodes].indexOf(card))
-            // let idx = [...card.parentNode.childNodes].indexOf(card)
-            // console.log(selectedPlace[idx])
-
-            // if(selectedPlace[idx].faceUp != false){
-            //     selectedPlace[idx].select = true
-            //     console.log(selectedPlace[idx])
-            // }
-
-
-
-
-            
-            
-            // if(e.target.innerText != 'Face Down'){
-            //     moveCardDivs(e)
-            // }
+            getSelectedCards(e);
         })
     });
 });
 
-
-
+document.addEventListener('DOMNodeInserted', () => {
+    let cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            getSelectedCards(e);
+        })
+    })
+})
 
 
 /// Can only select Face Up card
