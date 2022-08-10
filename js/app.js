@@ -4,33 +4,31 @@ class Card {
         this.rank = rank;
         this.faceUp = faceUp;
         this.color = color;
-    }
-}
+    };
+};
 
 class Deck {
     constructor (cards){
         this.cards = cards;
         this.drawCounter = 0;
-    }
+    };
     shuffle(){
         let currentIndex = this.cards.length, randomIndex;
         while (currentIndex != 0) {
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex--;
             [this.cards[currentIndex], this.cards[randomIndex]] = [this.cards[randomIndex], this.cards[currentIndex]];
-        }
-    }
+        };
+    };
     draw(){
         if (this.drawCounter == this.cards.length){
-            //Display blank card on Main deck div
-            drawDiv.innerText = ''
+            drawDiv.innerText = '';
             console.log("Going back to the beginning");
             this.drawCounter = 0;
-            
         }else{
             if(this.drawCounter >= 0 && this.drawCounter < this.cards.length){
-                drawDiv.innerText = `${this.cards[this.drawCounter].suit}${this.cards[this.drawCounter].rank}`
-                console.log(this.drawCounter)
+                drawDiv.innerText = `${this.cards[this.drawCounter].suit}${this.cards[this.drawCounter].rank}`;
+                console.log(this.drawCounter);
             }
             this.drawCounter++;
         }
@@ -38,22 +36,22 @@ class Deck {
     setUp(columns){
         for (let i=7;i>=1;i--){
             for(let j=1;j<=i;j++){
-                this.draw()
+                this.draw();
                 let currentCard = this.cards[this.drawCounter-1];
                 this.cards.splice(this.drawCounter-1, 1);
                 if (j==i){
                     currentCard.faceUp = true;
                 }
-                let variable = `column${i}`
+                let variable = `column${i}`;
                 eval(variable).push(currentCard);
                 this.drawCounter--;
-            }
-        } 
+            };
+        }; 
         for (let i=4; i<sortingArrayColumns.length;i++){
             for (let j=0; j<sortingArrayColumns[i].length; j++){
-                    let tempElem = document.createElement('div')
+                    let tempElem = document.createElement('div');
                     if (sortingArrayColumns[i][j].faceUp == false){
-                        tempElem.innerText = `Face Down`
+                        tempElem.innerText = `Face Down`;
                     }else{
                         tempElem.innerText = `${sortingArrayColumns[i][j].suit}${sortingArrayColumns[i][j].rank}`; 
                 }
@@ -62,53 +60,39 @@ class Deck {
             }
         }
         this.drawCounter = 0;
-        drawDiv.innerText = ''
+        drawDiv.innerText = '';
     }
-    selectCardFromDeck(e=null){
+    selectCardFromDeck(){
         if(this.drawCounter > 0){
-                
             selectedCard = this.cards[this.drawCounter-1];
             console.log(selectedCard);
-            
-                
-            // if (selectedPlace){
-            //     _placeCard(selectedPlace, e); 
-            //     // Set to either columns/sorted suits/or draw deck}
-            //     if (_placeCard(selectedPlace, e) == true){
-            //         if (this.drawCounter == 0){
-            //             drawDiv.innerText = ''
-            //         }else{
-            //             drawDiv.innerText = `${this.cards[this.drawCounter-1].suit}${this.cards[this.drawCounter-1].rank}`
-            //         }
-            //     }
-            // }
         }else{
-            console.log('No Cards Drawn')
-        }
-    }
-}
+            console.log('No Cards Drawn');
+        };
+    };
+};
 
 // Query Selector of main board Areas
 let mainDeck = document.querySelector('.main-deck');
 let drawDiv = document.querySelector('.draw-deck');
 let sortingColumnDivs = document.querySelectorAll('.sorting');
 
-let selectedCard = null
-let selectedPlace = null
+let selectedCard = null;
+let selectedPlace = null;
 
 // Columns for card Data
-let column1 = []
-let column2 = []
-let column3 = []
-let column4 = []
-let column5 = []
-let column6 = []
-let column7 = []
-let sortSuit1 = []
-let sortSuit2 = []
-let sortSuit3 = []
-let sortSuit4 = []
-let sortingArrayColumns = [sortSuit1, sortSuit2, sortSuit3, sortSuit4, column1, column2, column3, column4, column5, column6, column7,]
+let column1 = [];
+let column2 = [];
+let column3 = [];
+let column4 = [];
+let column5 = [];
+let column6 = [];
+let column7 = [];
+let sortSuit1 = [];
+let sortSuit2 = [];
+let sortSuit3 = [];
+let sortSuit4 = [];
+let sortingArrayColumns = [sortSuit1, sortSuit2, sortSuit3, sortSuit4, column1, column2, column3, column4, column5, column6, column7,];
 
 // Card Face Information
 const suit = ['H', 'S', 'C', 'D',];
@@ -124,12 +108,12 @@ for (let i=0; i<suit.length; i++){
         }else{
             let card = new Card(suit[i], rank[j], 'Black', false, false);
             solitaireDeck.cards.push(card);
-        }
-    }
-}
+        };
+    };
+};
 
-function findColumnArray(e) {
-    let place = e.target.className.split(' ')[1]
+function findColumnArray(divClass) {
+    let place = divClass
     switch(place){
         case 'sort-suit1':
             selectedPlace = sortSuit1;
@@ -164,91 +148,119 @@ function findColumnArray(e) {
         case 'column7':
             selectedPlace = column7;
             break;      
-    }
-}
+    };
+};
 
 function _placeCard(place, e){
     if(_canPlaceCard(place)){
         if (solitaireDeck.cards.includes(selectedCard)){
-            solitaireDeck.cards.splice(solitaireDeck.drawCounter-1, 1); // Remove current card from deck permanently if in deck.
+            solitaireDeck.cards.splice(solitaireDeck.drawCounter-1, 1); 
             solitaireDeck.drawCounter--;
             if (solitaireDeck.drawCounter == 0){
-                drawDiv.innerText = ''
+                drawDiv.innerText = '';
             }else{
-            drawDiv.innerText = `${solitaireDeck.cards[solitaireDeck.drawCounter-1].suit}${solitaireDeck.cards[solitaireDeck.drawCounter-1].rank}`
-            }
-        }
+            drawDiv.innerText = `${solitaireDeck.cards[solitaireDeck.drawCounter-1].suit}${solitaireDeck.cards[solitaireDeck.drawCounter-1].rank}`;
+            };
+        };
 
         let currentCard = selectedCard;
-        selectedCard = null
+        selectedCard = null;
         currentCard.faceUp = true;
         
 
         let cardElem = document.createElement('div');
-        cardElem.innerText = `${currentCard.suit}${currentCard.rank}`
+        cardElem.innerText = `${currentCard.suit}${currentCard.rank}`;
         cardElem.className = 'card';
-        console.log(e.target)
+        console.log(e.target);
         e.target.append(cardElem);
 
         place.push(currentCard);
         selectedPlace = null;
-        return true
+        return true;
 
     }else{
         selectedCard = null;
         selectedPlace = null;
-        return false
-    } 
-}  
+        return false;
+    }; 
+};  
 
 function _canPlaceCard(place){
     if (place == column1 || place == column2 || place == column3 || place == column4 || place == column5 || place == column6 || place == column7){
         if (place.length == 0 || selectedCard.color != place[place.length-1].color && rank.indexOf(selectedCard.rank) == rank.indexOf(place[place.length-1].rank) - 1){
             return true;
-        }
+        };
     }else if(place == sortSuit1 || place == sortSuit2 || place == sortSuit3 || place == sortSuit4){
         if (place.length == 0 && selectedCard.rank == 'A'){
             return true;
         }else if (place.length > 0 && selectedCard.suit == place[place.length-1].suit && rank.indexOf(selectedCard.rank) == rank.indexOf(place[place.length-1].rank) + 1){
             return true;
-        }
-    }
-    return false
-}
+        };
+    };
+    return false;
+};
     
 
 solitaireDeck.shuffle();
-solitaireDeck.setUp(sortingColumnDivs)
+solitaireDeck.setUp(sortingColumnDivs);
 
-console.log(sortingArrayColumns)
-console.log(solitaireDeck.cards)
-console.log(0 > -1)
+console.log(sortingArrayColumns);
+console.log(solitaireDeck.cards);
 
 
 mainDeck.addEventListener('click', () =>{
-    selectedCard = null
-    solitaireDeck.draw()
+    selectedCard = null;
+    solitaireDeck.draw();
 });
 
 drawDiv.addEventListener('click', () =>{
-    solitaireDeck.selectCardFromDeck()
+    solitaireDeck.selectCardFromDeck();
 });
 
 sortingColumnDivs.forEach(place => {
     place.addEventListener('click', (e) => {
         if(selectedCard != null){
-            findColumnArray(e) //This will select the place
+            let divClass = e.target.className.split(' ')[1]
+            findColumnArray(divClass);
         }
-        _placeCard(selectedPlace, e)
-        
+        _placeCard(selectedPlace, e);
+    });
+});
 
 
 
-        // if (solitaireDeck.drawCounter >0 && solitaireDeck.cards[solitaireDeck.drawCounter-1].select == true){
-        //     solitaireDeck.selectCardFromDeck(e.target);
-        //     console.log(selectPlace)
-        //     selectedPlace = null;
-        // }
+/// If user clicks card in columns an array of those cards will be added to selected card. 
+
+// Find column and index of selected divs to retrieve data 
+document.addEventListener('DOMContentLoaded', () => {
+    let cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            let divClass = e.target.parentNode.className.split(' ')[1]
+            findColumnArray(divClass)
+            let column = selectedPlace;
+            selectedPlace = null;
+            console.log(column)
+
+
+            // console.log([...card.parentNode.childNodes].indexOf(card))
+            // let idx = [...card.parentNode.childNodes].indexOf(card)
+            // console.log(selectedPlace[idx])
+
+            // if(selectedPlace[idx].faceUp != false){
+            //     selectedPlace[idx].select = true
+            //     console.log(selectedPlace[idx])
+            // }
+
+
+
+
+            
+            
+            // if(e.target.innerText != 'Face Down'){
+            //     moveCardDivs(e)
+            // }
+        })
     });
 });
 
@@ -256,33 +268,49 @@ sortingColumnDivs.forEach(place => {
 
 
 
-// document.addEventListener('DOMContentLoaded', () => {
-//     let cards = document.querySelectorAll('.card');
-//     cards.forEach(card => {
-//         card.addEventListener('click', (e) => {
+/// Can only select Face Up card
 
-//             findDivColumn(card.parentNode)
-//             console.log(selectedPlace)
-//             console.log([...card.parentNode.childNodes].indexOf(card))
-//             let idx = [...card.parentNode.childNodes].indexOf(card)
-//             console.log(selectedPlace[idx])
+/// If user clicks on another column after,  cards will be placed based on condition. 
 
-//             if(selectedPlace[idx].faceUp != false){
-//                 selectedPlace[idx].select = true
-//                 console.log(selectPlace[idx])
-//             }
+/// The previous column last card will be set to face up
 
 
 
 
-            
-            
-//             // if(e.target.innerText != 'Face Down'){
-//             //     moveCardDivs(e)
-//             // }
-//         })
-//     });
-// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// if (solitaireDeck.drawCounter >0 && solitaireDeck.cards[solitaireDeck.drawCounter-1].select == true){
+        //     solitaireDeck.selectCardFromDeck(e.target);
+        //     console.log(selectPlace)
+        //     selectedPlace = null;
+        // }
+
+
 
 // console.log(selectList)
 
