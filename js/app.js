@@ -32,7 +32,7 @@ class Deck {
             this.drawCounter++;
         }
     }
-    setUp(){
+    setUp(columns){
         for (let i=7;i>=1;i--){
             for(let j=1;j<=i;j++){
                 this.draw()
@@ -46,76 +46,101 @@ class Deck {
                 this.drawCounter--;
             }
         } 
-        addCards()
+        for (let i=4; i<sortingArrayColumns.length;i++){
+            for (let j=0; j<sortingArrayColumns[i].length; j++){
+                    let tempElem = document.createElement('div')
+                    if (sortingArrayColumns[i][j].faceUp == false){
+                        tempElem.innerText = `Face Down`
+                    }else{
+                        tempElem.innerText = `${sortingArrayColumns[i][j].suit}${sortingArrayColumns[i][j].rank}`; 
+                }
+                tempElem.className = 'card';
+                columns[i].appendChild(tempElem);
+            }
+        }
         
     }
     selectCardFromDeck(e){
-            if(this.drawCounter > 0){
+        if(this.drawCounter > 0){
                 
-                this.cards[this.drawCounter-1].select = true;
-                // 
-                // highlight this card in css
+            selectedCard = this.cards[this.drawCounter-1];
+            // 
+            // highlight this card in css
                 
-                if (selectPlace){
-                    this._placeCard(selectPlace, e); 
-                        // Set to either columns/sorted suits/or draw deck}
+            if (selectPlace){
+                _placeCard(selectPlace, e); 
+                // Set to either columns/sorted suits/or draw deck}
+                if (_placeCard(selectPlace, e) == true){
+                    if (this.drawCounter == 0){
+                        drawDiv.innerText = ''
+                    }else{
+                        drawDiv.innerText = `${this.cards[this.drawCounter-1].suit}${this.cards[this.drawCounter-1].rank}`
+                    }
                 }
             }
-            else{
-                console.log('No Cards Drawn')
-            }
-    }
-    _placeCard(place, e){
-
-        if(this._canPlaceCard(place)){
-            let currentCard = this.cards[this.drawCounter-1];
-            this.cards.splice(this.drawCounter-1, 1);
-            currentCard.faceUp = true;
-            currentCard.select = false;
-            console.log(e)
-            let suit = e.className.split(' ')[1]
-            if (suit == 'sort-suit1' || suit == 'sort-suit2' || suit == 'sort-suit3' || suit == 'sort-suit4'){
-                e.innerText = `${currentCard.suit}${currentCard.rank}`
-            }else {
-                let placeCard = document.createElement('div');
-                placeCard.innerText = `${currentCard.suit}${currentCard.rank}`
-                placeCard.className = 'card';
-                e.appendChild(placeCard);
-            }
-
-            place.push(currentCard);
-            this.drawCounter--;
-            if (this.drawCounter == 0){
-                drawDiv.innerText = ''
-            }else{
-                drawDiv.innerText = `${this.cards[this.drawCounter-1].suit}${this.cards[this.drawCounter-1].rank}`
-            }
-
-
         }else{
-            this.cards[this.drawCounter-1].select = false;
-        } 
-   }  
-    _canPlaceCard(place){
-        if (place == column1 || place == column2 || place == column3 || place == column4 || place == column5 || place == column6 || place == column7){
-            if (place.length < 1 || this.cards[this.drawCounter-1].color != place[place.length-1].color && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) - 1){
-                return true;
-            }
-        }else if(place == sortSuit1 || place == sortSuit2 || place == sortSuit3 || place == sortSuit4){
-            if (place.length < 1 && this.cards[this.drawCounter-1].rank == 'A'){
-                return true;
-            }else if (place.length >= 1 && this.cards[this.drawCounter-1].suit == place[place.length-1].suit && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) + 1){
-                return true;
-            }
+            console.log('No Cards Drawn')
         }
-        return false
     }
 }
+
+
+
 
 let mainDeck = document.querySelector('.main-deck');
 let drawDiv = document.querySelector('.draw-deck');
 let sortingDeck = document.querySelectorAll('.sorting');
 
+let selectedCard = null
+
+
+
+function _placeCard(place, e){
+
+    if(_canPlaceCard(place)){
+        if (solitaireDeck.includes(selectedCard)){
+            solitaireDeck.cards.splice(solitaireDeck.drawCounter-1, 1); // Remove current card from deck permanently if in deck.
+            this.drawCounter--;
+        }
+
+        let currentCard = selectedCard;
+        selectedCard = null
+        currentCard.faceUp = true;
+        
+
+        // let suit = e.className.split(' ')[1]
+        // if (suit == 'sort-suit1' || suit == 'sort-suit2' || suit == 'sort-suit3' || suit == 'sort-suit4'){
+        //     e.innerText = `${currentCard.suit}${currentCard.rank}`
+        // }else {
+        let placeCard = document.createElement('div');
+        placeCard.innerText = `${currentCard.suit}${currentCard.rank}`
+        placeCard.className = 'card';
+        e.eventTarget.appendChild(placeCard);
+
+        place.push(currentCard);
+        return true
+
+    }else{
+        selectedCard = null;
+        return false
+    } 
+}  
+
+
+function _canPlaceCard(place){
+    if (place == column1 || place == column2 || place == column3 || place == column4 || place == column5 || place == column6 || place == column7){
+        if (place.length < 1 || selectedCard.color != place[place.length-1].color && rank.indexOf(selectedCard.rank) == rank.indexOf(place[place.length-1].rank) - 1){
+            return true;
+        }
+    }else if(place == sortSuit1 || place == sortSuit2 || place == sortSuit3 || place == sortSuit4){
+        if (place.length < 1 && selectedCard.rank == 'A'){
+            return true;
+        }else if (place.length >= 1 && selectedCard.suit == place[place.length-1].suit && rank.indexOf(selectedCard.rank) == rank.indexOf(place[place.length-1].rank) + 1){
+            return true;
+        }
+    }
+    return false
+}
 
 
 
@@ -232,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // let gameActive = true;
 solitaireDeck.shuffle();
-solitaireDeck.setUp();
+solitaireDeck.setUp(sortingDeck);
 
 
 console.log(solitaireDeck.cards)
