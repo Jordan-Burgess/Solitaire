@@ -72,14 +72,22 @@ class Deck {
             this.cards.splice(this.drawCounter-1, 1);
             currentCard.faceUp = true;
             currentCard.select = false;
-            
-
-            let placeCard = document.createElement('div');
-            placeCard.innerText = `${currentCard.suit}${currentCard.rank}`
-            e.target.appendChild(placeCard);
+            let suit = e.target.className.split(' ')[1]
+            if (suit == 'sort-suit1' || suit == 'sort-suit2' || suit == 'sort-suit3' || suit == 'sort-suit4'){
+                e.target.innerText = `${currentCard.suit}${currentCard.rank}`
+            }else {
+                let placeCard = document.createElement('div');
+                placeCard.innerText = `${currentCard.suit}${currentCard.rank}`
+                e.target.appendChild(placeCard);
+            }
 
             place.push(currentCard);
             this.drawCounter--;
+            if (this.drawCounter == 0){
+                drawDiv.innerText = ''
+            }else{
+                drawDiv.innerText = `${this.cards[this.drawCounter-1].suit}${this.cards[this.drawCounter-1].rank}`
+            }
 
 
         }else{
@@ -88,13 +96,13 @@ class Deck {
    }  
     _canPlaceCard(place){
         if (place == column1 || place == column2 || place == column3 || place == column4 || place == column5 || place == column6 || place == column7){
-            if (place == false || this.cards[this.drawCounter-1].color != place[place.length-1].color && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) - 1){
+            if (place.length < 1 || this.cards[this.drawCounter-1].color != place[place.length-1].color && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) - 1){
                 return true;
             }
         }else if(place == sortSuit1 || place == sortSuit2 || place == sortSuit3 || place == sortSuit4){
-            if (place == false && this.cards[this.drawCounter-1].rank == 'A'){
+            if (place.length < 1 && this.cards[this.drawCounter-1].rank == 'A'){
                 return true;
-            }else if (place == true && this.cards[this.drawCounter-1].suit == place[place.length-1].suit && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) + 1){
+            }else if (place.length >= 1 && this.cards[this.drawCounter-1].suit == place[place.length-1].suit && rank.indexOf(this.cards[this.drawCounter-1].rank) == rank.indexOf(place[place.length-1].rank) + 1){
                 return true;
             }
         }
@@ -176,7 +184,7 @@ mainDeck.addEventListener('click', () =>{
     }
     
     solitaireDeck.draw()
-    if (solitaireDeck.drawCounter != solitaireDeck.cards.length){
+    if (solitaireDeck.drawCounter != solitaireDeck.cards.length-1){
         drawDiv.innerText = `${solitaireDeck.cards[solitaireDeck.drawCounter-1].suit}${solitaireDeck.cards[solitaireDeck.drawCounter-1].rank}`
     }
 });
@@ -229,7 +237,6 @@ sortingDeck.forEach(sort => {
         if (solitaireDeck.cards[solitaireDeck.drawCounter-1].select == true){
             solitaireDeck.selectCardFromDeck(e);
             console.log(selectPlace)
-            console.log(solitaireDeck.cards[solitaireDeck.drawCounter-1])
             selectPlace = null;
 
         }
