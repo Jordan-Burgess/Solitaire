@@ -25,7 +25,7 @@ class Deck {
         if (this.drawCounter == this.cards.length){
             //Display blank card on Main deck div
             console.log("Going back to the beginning");
-            this.drawCounter = 0;
+            this.drawCounter = 1;
             
         }else{
             // Display this card on Draw deck div
@@ -175,16 +175,16 @@ function addCards() {
 }
 
 
-
-
 // add event listeners to have draw() run if user clicks main deck div
 mainDeck.addEventListener('click', () =>{
-    if (drawDiv.innerText){
+  if (drawDiv.innerText){
         solitaireDeck.cards[solitaireDeck.drawCounter-1].select = false
     }
     
     solitaireDeck.draw()
-    if (solitaireDeck.drawCounter != solitaireDeck.cards.length-1){
+    if (solitaireDeck.drawCounter > 0){
+        console.log(solitaireDeck.drawCounter)
+        console.log(solitaireDeck.cards.length-1)
         drawDiv.innerText = `${solitaireDeck.cards[solitaireDeck.drawCounter-1].suit}${solitaireDeck.cards[solitaireDeck.drawCounter-1].rank}`
     }
 });
@@ -238,7 +238,6 @@ sortingDeck.forEach(sort => {
             solitaireDeck.selectCardFromDeck(e);
             console.log(selectPlace)
             selectPlace = null;
-
         }
     });
 });
