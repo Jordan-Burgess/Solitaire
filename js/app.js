@@ -69,20 +69,19 @@ class Deck {
                 
             selectedCard = this.cards[this.drawCounter-1];
             console.log(selectedCard);
-            // 
-            // highlight this card in css
+            
                 
-            if (selectedPlace){
-                _placeCard(selectedPlace, e); 
-                // Set to either columns/sorted suits/or draw deck}
-                if (_placeCard(selectedPlace, e) == true){
-                    if (this.drawCounter == 0){
-                        drawDiv.innerText = ''
-                    }else{
-                        drawDiv.innerText = `${this.cards[this.drawCounter-1].suit}${this.cards[this.drawCounter-1].rank}`
-                    }
-                }
-            }
+            // if (selectedPlace){
+            //     _placeCard(selectedPlace, e); 
+            //     // Set to either columns/sorted suits/or draw deck}
+            //     if (_placeCard(selectedPlace, e) == true){
+            //         if (this.drawCounter == 0){
+            //             drawDiv.innerText = ''
+            //         }else{
+            //             drawDiv.innerText = `${this.cards[this.drawCounter-1].suit}${this.cards[this.drawCounter-1].rank}`
+            //         }
+            //     }
+            // }
         }else{
             console.log('No Cards Drawn')
         }
@@ -129,8 +128,8 @@ for (let i=0; i<suit.length; i++){
     }
 }
 
-function findDivColumn(e) {
-    let place = e.className.split(' ')[1]
+function findColumnArray(e) {
+    let place = e.target.className.split(' ')[1]
     switch(place){
         case 'sort-suit1':
             selectedPlace = sortSuit1;
@@ -170,9 +169,14 @@ function findDivColumn(e) {
 
 function _placeCard(place, e){
     if(_canPlaceCard(place)){
-        if (solitaireDeck.includes(selectedCard)){
+        if (solitaireDeck.cards.includes(selectedCard)){
             solitaireDeck.cards.splice(solitaireDeck.drawCounter-1, 1); // Remove current card from deck permanently if in deck.
-            this.drawCounter--;
+            solitaireDeck.drawCounter--;
+            if (solitaireDeck.drawCounter == 0){
+                drawDiv.innerText = ''
+            }else{
+            drawDiv.innerText = `${solitaireDeck.cards[solitaireDeck.drawCounter-1].suit}${solitaireDeck.cards[solitaireDeck.drawCounter-1].rank}`
+            }
         }
 
         let currentCard = selectedCard;
@@ -180,33 +184,32 @@ function _placeCard(place, e){
         currentCard.faceUp = true;
         
 
-        // let suit = e.className.split(' ')[1]
-        // if (suit == 'sort-suit1' || suit == 'sort-suit2' || suit == 'sort-suit3' || suit == 'sort-suit4'){
-        //     e.innerText = `${currentCard.suit}${currentCard.rank}`
-        // }else {
-        let placeCard = document.createElement('div');
-        placeCard.innerText = `${currentCard.suit}${currentCard.rank}`
-        placeCard.className = 'card';
-        e.eventTarget.appendChild(placeCard);
+        let cardElem = document.createElement('div');
+        cardElem.innerText = `${currentCard.suit}${currentCard.rank}`
+        cardElem.className = 'card';
+        console.log(e.target)
+        e.target.append(cardElem);
 
         place.push(currentCard);
+        selectedPlace = null;
         return true
 
     }else{
         selectedCard = null;
+        selectedPlace = null;
         return false
     } 
 }  
 
 function _canPlaceCard(place){
     if (place == column1 || place == column2 || place == column3 || place == column4 || place == column5 || place == column6 || place == column7){
-        if (place.length < 1 || selectedCard.color != place[place.length-1].color && rank.indexOf(selectedCard.rank) == rank.indexOf(place[place.length-1].rank) - 1){
+        if (place.length == 0 || selectedCard.color != place[place.length-1].color && rank.indexOf(selectedCard.rank) == rank.indexOf(place[place.length-1].rank) - 1){
             return true;
         }
     }else if(place == sortSuit1 || place == sortSuit2 || place == sortSuit3 || place == sortSuit4){
-        if (place.length < 1 && selectedCard.rank == 'A'){
+        if (place.length == 0 && selectedCard.rank == 'A'){
             return true;
-        }else if (place.length >= 1 && selectedCard.suit == place[place.length-1].suit && rank.indexOf(selectedCard.rank) == rank.indexOf(place[place.length-1].rank) + 1){
+        }else if (place.length > 0 && selectedCard.suit == place[place.length-1].suit && rank.indexOf(selectedCard.rank) == rank.indexOf(place[place.length-1].rank) + 1){
             return true;
         }
     }
@@ -231,6 +234,23 @@ drawDiv.addEventListener('click', () =>{
     solitaireDeck.selectCardFromDeck()
 });
 
+sortingColumnDivs.forEach(place => {
+    place.addEventListener('click', (e) => {
+        if(selectedCard != null){
+            findColumnArray(e) //This will select the place
+        }
+        _placeCard(selectedPlace, e)
+        
+
+
+
+        // if (solitaireDeck.drawCounter >0 && solitaireDeck.cards[solitaireDeck.drawCounter-1].select == true){
+        //     solitaireDeck.selectCardFromDeck(e.target);
+        //     console.log(selectPlace)
+        //     selectedPlace = null;
+        // }
+    });
+});
 
 
 
@@ -333,16 +353,7 @@ drawDiv.addEventListener('click', () =>{
 
 
 
-sortingColumnDivs.forEach(sort => {
-    sort.addEventListener('click', (e) => {
-        findDivColumn(e.target)
-        if (solitaireDeck.drawCounter >0 && solitaireDeck.cards[solitaireDeck.drawCounter-1].select == true){
-            solitaireDeck.selectCardFromDeck(e.target);
-            console.log(selectPlace)
-            selectedPlace = null;
-        }
-    });
-});
+
 
 // console.log(column7)
 
