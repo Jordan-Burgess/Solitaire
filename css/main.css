@@ -15,7 +15,7 @@ p {
 }
 
 .deck {
-    border: solid black 2px;
+    background-color: rgba(0, 0, 0, 0.2);
     margin: 5px;
     min-width: 130px;
     min-height: 190px;
@@ -30,7 +30,7 @@ p {
 }
 
 .main-deck {
-    background-image: url('../images/C/2.png');
+    background-image: url('../images/cardback.png');
     background-size: cover;
 }
 

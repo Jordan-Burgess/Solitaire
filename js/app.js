@@ -26,7 +26,7 @@ class Deck {
             drawDiv.style.backgroundImage = 'none';
             console.log("Going back to the beginning");
             this.drawCounter = 0;
-            mainDeck.style.backgroundImage = "url('../images/C/2.png')";
+            mainDeck.style.backgroundImage = "url('../images/cardback.png')";
         }else{
             if(this.drawCounter >= 0 && this.drawCounter < this.cards.length){
                 console.log(this.drawCounter);
@@ -67,6 +67,8 @@ class Deck {
         }
         this.drawCounter = 0;
         drawDiv.innerText = '';
+        drawDiv.style.backgroundImage = 'none';
+        
     }
     selectCardFromDeck(){
         if(this.drawCounter > 0){
@@ -122,7 +124,7 @@ function makeSolitaireDeck(){
             };
         };
     };
-}
+};
 
 function findColumnArray(divClass) {
     let place = divClass
