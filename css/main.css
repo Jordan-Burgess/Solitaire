@@ -22,11 +22,11 @@ p {
 }
 
 .sorting {
-    height: auto;
-    width: auto;
     background-color: grey;
     margin: 5px;
     border: solid black 2px;
+    min-width: 130px;
+    min-height: 190px;
 }
 
 .main-deck {
@@ -35,6 +35,10 @@ p {
 }
 
 .draw-deck {
+    background-size: cover;
+}
+
+.card {
     background-size: cover;
 }
 

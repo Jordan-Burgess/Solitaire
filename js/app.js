@@ -58,8 +58,10 @@ class Deck {
                     let tempElem = document.createElement('div');
                     if (sortingArrayColumns[i][j].faceUp == false){
                         tempElem.innerText = `Face Down`;
+                        tempElem.style.backgroundImage = "url('../images/cardback.png')";
                     }else{
                         tempElem.innerText = `${sortingArrayColumns[i][j].suit}${sortingArrayColumns[i][j].rank}`; 
+                        tempElem.style.backgroundImage = `url('../images/${sortingArrayColumns[i][j].suit}/${sortingArrayColumns[i][j].rank}.png')`;
                 }
                 tempElem.className = 'card';
                 columns[i].appendChild(tempElem);
