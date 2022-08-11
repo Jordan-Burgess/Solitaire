@@ -60,8 +60,10 @@ class Deck {
                         tempElem.innerText = `Face Down`;
                         tempElem.style.backgroundImage = "url('../images/cardback.png')";
                     }else{
-                        tempElem.innerText = `${sortingArrayColumns[i][j].suit}${sortingArrayColumns[i][j].rank}`; 
                         tempElem.style.backgroundImage = `url('../images/${sortingArrayColumns[i][j].suit}/${sortingArrayColumns[i][j].rank}.png')`;
+                        tempElem.style.minWidth = '130px';
+                        tempElem.style.minHeight = '190px';
+
                 }
                 tempElem.className = 'card';
                 columns[i].appendChild(tempElem);
@@ -213,6 +215,9 @@ function _placeCard(place, e){
     }else{
         selectedCard = null;
         selectedPlace = null;
+
+        /// get previous parent and index - set box shadow and all next siblings to no box shadow (target)
+        // .style.boxShadow = "0 10px 10px";
         return false;
     }; 
 };  
@@ -276,6 +281,8 @@ function getSelectedCards(e){
     previousParent = e.target.parentNode;
 
     selectedCard = column.slice(idx);
+    
+    e.target.style.boxShadow = "0 10px 10px";
 }
 
 
@@ -313,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
             e.stopPropagation();
-            if(card.innerText != 'Face Down'){
+            if(card.style.backgroundImage != "url('../images/cardback.png')"){
                 getSelectedCards(e);
             }
         })
@@ -325,7 +332,7 @@ document.addEventListener('DOMNodeInserted', () => {
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
             e.stopPropagation();
-            if(card.innerText != 'Face Down'){
+            if(card.style.backgroundImage != "url('../images/cardback.png')"){
                 getSelectedCards(e);
             }
         })
