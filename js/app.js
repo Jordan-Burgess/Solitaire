@@ -72,6 +72,8 @@ class Deck {
     };
 };
 
+// the moved arrays are not being pushed to the new list
+
 // Query Selector of main board Areas
 let mainDeck = document.querySelector('.main-deck');
 let drawDiv = document.querySelector('.draw-deck');
@@ -79,6 +81,9 @@ let sortingColumnDivs = document.querySelectorAll('.sorting');
 
 let selectedCard = null;
 let selectedPlace = null;
+let previousColumn = null;
+let previousIdx = null;
+let previousParent = null;
 
 // Columns for card Data
 let column1 = [];
@@ -167,10 +172,12 @@ function _placeCard(place, e){
                 let currentCard = selectedCard[i];
                 let cardElem = document.createElement('div');
                 cardElem.innerText = `${currentCard.suit}${currentCard.rank}`;
+                cardElem.className = 'card';
                 e.target.append(cardElem)
                 place.push(currentCard)
             }
             selectedCard = null;
+            clearPastColumn()
         }else{
             let currentCard = selectedCard;
             selectedCard = null;
@@ -218,16 +225,45 @@ function _canPlaceCard(place){
     };
     return false;
 };
+
+function clearPastColumn(){
+    previousColumn.splice(previousIdx);
+    if (previousColumn.length > 0){
+        previousColumn[previousColumn.length-1].faceUp = true;
+    }
     
-function getSelectedCards (e){
+    while(previousParent.firstChild){
+        previousParent.removeChild(previousParent.lastChild)
+    }
+    for(let i=0; i<previousColumn.length; i++){
+        let tempElem = document.createElement('div');
+        if (previousColumn[i].faceUp == false){
+            tempElem.innerText = `Face Down`;
+        }else{
+            tempElem.innerText = `${previousColumn[i].suit}${previousColumn[i].rank}`; 
+        }
+        tempElem.className = 'card';
+            previousParent.appendChild(tempElem);
+    }
+    previousColumn = null;
+    previousIdx = null;
+    previousParent = null;
+}
+    
+function getSelectedCards(e){
     // Find Column of clicked table card
     let divClass = e.target.parentNode.className.split(' ')[1];
     findColumnArray(divClass);
     let column = selectedPlace;
     selectedPlace = null;
+    
 
     // Find index of clicked card
     let idx = [...e.target.parentNode.childNodes].indexOf(e.target)
+    previousColumn = column;
+    previousIdx = idx;
+    previousParent = e.target.parentNode;
+
 
     
     selectedCard = column.slice(idx)
@@ -290,9 +326,11 @@ document.addEventListener('DOMNodeInserted', () => {
 
 
 
-/// If user clicks on another column after,  cards will be placed based on condition. 
 
-/// The previous column last card will be set to face up
+///  The previous column last card will be set to face up
+/// And all last cards deleted
+
+
 
 
 
