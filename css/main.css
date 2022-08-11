@@ -1,3 +1,7 @@
+body {
+    background: url('../images/background.jpg');
+    background-size: cover;
+}
 p {
     color: blue;
 }
@@ -7,11 +11,35 @@ p {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: 200px 600px;
+
+}
+
+.deck {
+    border: solid black 2px;
+    margin: 5px;
+    min-width: 130px;
+    min-height: 190px;
+}
+
+.sorting {
+    height: auto;
+    width: auto;
+    background-color: grey;
+    margin: 5px;
+    border: solid black 2px;
+}
+
+.main-deck {
+    background-image: url('../images/C/2.png');
+    background-size: cover;
+}
+
+.draw-deck {
+    background-size: cover;
 }
 
 .spades{
     grid-column: 4 / span 1;
-    background-image: url('./images/faces.png');
 }
 
 .sort-suit1{
@@ -40,19 +68,5 @@ p {
     grid-row: 2 / span 1
 }
 
-.deck {
-    /* background: url("https://i.imgur.com/CKNzqeH.png");
-    background-size: cover; */
-    border: solid black 2px;
-    margin: 5px;
-}
 
 
-
-.sorting {
-    height: auto;
-    width: auto;
-    background-color: grey;
-    margin: 5px;
-    border: solid black 2px;
-}
