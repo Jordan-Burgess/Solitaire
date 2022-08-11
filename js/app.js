@@ -74,6 +74,8 @@ class Deck {
         if(this.drawCounter > 0){
             selectedCard = this.cards[this.drawCounter-1];
             console.log(selectedCard);
+            drawDiv.style.boxShadow = "0 10px 10px";
+
         }else{
             console.log('No Cards Drawn');
         };
@@ -172,8 +174,12 @@ function _placeCard(place, e){
             solitaireDeck.drawCounter--;
             if (solitaireDeck.drawCounter == 0){
                 drawDiv.innerText = '';
+                drawDiv.style.backgroundImage = 'none'
+                drawDiv.style.boxShadow = 'none';
+
             }else{
-            drawDiv.innerText = `${solitaireDeck.cards[solitaireDeck.drawCounter-1].suit}${solitaireDeck.cards[solitaireDeck.drawCounter-1].rank}`;
+            drawDiv.style.backgroundImage = `url('../images/${solitaireDeck.cards[solitaireDeck.drawCounter-1].suit}/${solitaireDeck.cards[solitaireDeck.drawCounter-1].rank}.png')`;
+            drawDiv.style.boxShadow = 'none';
             };
         };
         if(Array.isArray(selectedCard)){
@@ -282,6 +288,7 @@ console.log(solitaireDeck)
 // EVENT LISTENERS
 mainDeck.addEventListener('click', () =>{
     selectedCard = null;
+    drawDiv.style.boxShadow = "none";
     solitaireDeck.draw();
 });
 
