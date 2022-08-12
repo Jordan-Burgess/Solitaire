@@ -196,8 +196,14 @@ function _placeCard(place, e){
                 cardElem.style.minWidth = '130px';
                 cardElem.style.minHeight = '190px';
                 if (e.childNodes.length > 0){
+                    if (e.className.split(' ')[1] == 'sort-suit1' || e.className.split(' ')[1] == 'sort-suit2' || e.className.split(' ')[1] == 'sort-suit3' || e.className.split(' ')[1] == 'sort-suit4'){
+                        e.lastChild.style.minHeight = '1px';
+                    }
+                    else{
                     e.lastChild.style.minHeight = '35px';
-                }
+                    }
+                } 
+                console.log(e)
                 
                 e.append(cardElem)
                 place.push(currentCard)
@@ -216,7 +222,11 @@ function _placeCard(place, e){
             cardElem.style.minWidth = '130px';
             cardElem.style.minHeight = '190px';
             if (e.childNodes.length > 0){
-                e.lastChild.style.minHeight = '35px';
+                if (e.className.split(' ')[1] == 'sort-suit1' || e.className.split(' ')[1] == 'sort-suit2' || e.className.split(' ')[1] == 'sort-suit3' || e.className.split(' ')[1] == 'sort-suit4'){
+                    e.lastChild.style.minHeight = '1px';
+                }else{
+                    e.lastChild.style.minHeight = '35px';
+                }
             }
             e.append(cardElem);
 
