@@ -80,6 +80,8 @@ class Deck {
 let mainDeck = document.querySelector('.main-deck');
 let drawDiv = document.querySelector('.draw-deck');
 let sortingColumnDivs = document.querySelectorAll('.sorting');
+let winBlock = document.querySelector('.win-block');
+let startButton = document.querySelector('.start');
 
 let selectedCard = null;
 let selectedPlace = null;
@@ -217,7 +219,7 @@ function _placeCard(place, e){
         };
         selectedPlace = null;
         if(checkWin()){
-            console.log('You Win')
+            winBlock.innerText = "You Win!!!"
         };
         return true;
 
