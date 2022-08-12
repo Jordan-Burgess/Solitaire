@@ -194,10 +194,10 @@ function _placeCard(place, e){
                 cardElem.style.backgroundImage = `url('../images/${currentCard.suit}/${currentCard.rank}.png')`;
                 cardElem.style.minWidth = '130px';
                 cardElem.style.minHeight = '190px';
-                if (e.target.childNodes.length > 0){
-                    e.target.lastChild.style.minHeight = '35px';
+                if (e.childNodes.length > 0){
+                    e.lastChild.style.minHeight = '35px';
                 }
-                e.target.append(cardElem)
+                e.append(cardElem)
                 place.push(currentCard)
             }
             selectedCard = null;
@@ -213,10 +213,10 @@ function _placeCard(place, e){
             cardElem.style.backgroundImage = `url('../images/${currentCard.suit}/${currentCard.rank}.png')`;
             cardElem.style.minWidth = '130px';
             cardElem.style.minHeight = '190px';
-            if (e.target.childNodes.length > 0){
-                e.target.lastChild.style.minHeight = '35px';
+            if (e.childNodes.length > 0){
+                e.lastChild.style.minHeight = '35px';
             }
-            e.target.append(cardElem);
+            e.append(cardElem);
 
             place.push(currentCard);
         }
@@ -326,7 +326,7 @@ sortingColumnDivs.forEach(place => {
         if(selectedCard != null){
             let divClass = e.target.className.split(' ')[1]
             findColumnArray(divClass);
-            _placeCard(selectedPlace, e);
+            _placeCard(selectedPlace, e.target);
         }
     });
 });
@@ -335,9 +335,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let cards = document.querySelectorAll('.card');
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if(card.style.backgroundImage != "url('../images/cardback.png')"){
-                getSelectedCards(e);
+            if(selectedCard == null){
+                e.stopPropagation();
+                if(card.style.backgroundImage != "url('../images/cardback.png')"){
+                    getSelectedCards(e);
+                }
+            }else{
+                let divClass = e.target.parentNode.className.split(' ')[1]
+                findColumnArray(divClass);
+                _placeCard(selectedPlace, e.target.parentNode);
             }
         })
     });
@@ -347,9 +353,15 @@ document.addEventListener('DOMNodeInserted', () => {
     let cards = document.querySelectorAll('.card');
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if(card.style.backgroundImage != "url('../images/cardback.png')"){
-                getSelectedCards(e);
+            if(selectedCard == null){
+                e.stopPropagation();
+                if(card.style.backgroundImage != "url('../images/cardback.png')"){
+                    getSelectedCards(e);
+                }
+            }else{
+                let divClass = e.target.parentNode.className.split(' ')[1]
+                findColumnArray(divClass);
+                _placeCard(selectedPlace, e.target.parentNode);
             }
         })
     })
