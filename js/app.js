@@ -194,7 +194,9 @@ function _placeCard(place, e){
                 cardElem.style.backgroundImage = `url('../images/${currentCard.suit}/${currentCard.rank}.png')`;
                 cardElem.style.minWidth = '130px';
                 cardElem.style.minHeight = '190px';
-                e.target.lastChild.style.minHeight = '35px';
+                if (e.target.childNodes.length > 0){
+                    e.target.lastChild.style.minHeight = '35px';
+                }
                 e.target.append(cardElem)
                 place.push(currentCard)
             }
@@ -211,7 +213,9 @@ function _placeCard(place, e){
             cardElem.style.backgroundImage = `url('../images/${currentCard.suit}/${currentCard.rank}.png')`;
             cardElem.style.minWidth = '130px';
             cardElem.style.minHeight = '190px';
-            e.target.lastChild.style.minHeight = '35px';
+            if (e.target.childNodes.length > 0){
+                e.target.lastChild.style.minHeight = '35px';
+            }
             e.target.append(cardElem);
 
             place.push(currentCard);
@@ -263,8 +267,15 @@ function clearPastColumn(){
         let tempElem = document.createElement('div');
         if (previousColumn[i].faceUp == false){
             tempElem.innerText = `Face Down`;
+            tempElem.style.backgroundImage = "url('../images/cardback.png')";
         }else{
             tempElem.innerText = `${previousColumn[i].suit}${previousColumn[i].rank}`; 
+            tempElem.style.backgroundImage = `url('../images/${previousColumn[i].suit}/${previousColumn[i].rank}.png')`;
+            tempElem.style.minHeight = '35px';
+            if (i == previousColumn.length-1){
+                tempElem.style.minWidth = '130px';
+                tempElem.style.minHeight = '190px';
+            }
         }
         tempElem.className = 'card';
         previousParent.appendChild(tempElem);
