@@ -189,17 +189,21 @@ function _placeCard(place, e){
             for(let i=0; i<selectedCard.length; i++){
                 let currentCard = selectedCard[i];
                 let cardElem = document.createElement('div');
-                cardElem.className = 'card';
+
+                cardElem.className = 'new-card';
                 cardElem.style.backgroundImage = `url('../images/${currentCard.suit}/${currentCard.rank}.png')`;
+
                 cardElem.style.minWidth = '130px';
                 cardElem.style.minHeight = '190px';
                 if (e.childNodes.length > 0){
                     e.lastChild.style.minHeight = '35px';
                 }
+                
                 e.append(cardElem)
                 place.push(currentCard)
             }
             selectedCard = null;
+            console.log('success')
             clearPastColumn()
         }else{
             let currentCard = selectedCard;
@@ -207,7 +211,7 @@ function _placeCard(place, e){
             currentCard.faceUp = true;
         
             let cardElem = document.createElement('div');
-            cardElem.className = 'card';
+            cardElem.className = 'new-card';
             cardElem.style.backgroundImage = `url('../images/${currentCard.suit}/${currentCard.rank}.png')`;
             cardElem.style.minWidth = '130px';
             cardElem.style.minHeight = '190px';
@@ -233,12 +237,20 @@ function _canPlaceCard(place){
     let cardRank
     let cardSuit
     let cardColor
+    let aceClass
+
+    if (previousParent != null){
+        aceClass = previousParent.className.split(' ')[1]
+    }
 
     cardRank = selectedCard.rank || selectedCard[0].rank;
     cardSuit = selectedCard.suit || selectedCard[0].suit;
     cardColor = selectedCard.color || selectedCard[0].color;
 
     if (place == column1 || place == column2 || place == column3 || place == column4 || place == column5 || place == column6 || place == column7){
+        if (aceClass == 'sort-suit1' || aceClass == 'sort-suit2' || aceClass == 'sort-suit3' || aceClass == 'sort-suit4'){
+            if(selectedCard.length > 1) return false
+        }
         if (place.length == 0 || cardColor != place[place.length-1].color && rank.indexOf(cardRank) == rank.indexOf(place[place.length-1].rank) - 1){
             return true;
         };
@@ -277,7 +289,7 @@ function clearPastColumn(){
                 tempElem.style.minHeight = '190px';
             }
         }
-        tempElem.className = 'card';
+        tempElem.className = 'new-card';
         previousParent.appendChild(tempElem);
     }
     previousColumn = null;
@@ -336,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let cards = document.querySelectorAll('.card');
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
-            console.log(selectedCard)
+            console.log(selectedCard + 'success')
             if(selectedCard == null){
                 e.stopPropagation();
                 if(card.style.backgroundImage != "url('../images/cardback.png')"){
@@ -346,16 +358,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 let divClass = e.target.parentNode.className.split(' ')[1]
                 findColumnArray(divClass);
                 _placeCard(selectedPlace, e.target.parentNode);
+                console.log(selectedCard)
             }
         })
     });
 });
 
 document.addEventListener('DOMNodeInserted', () => {
-    let cards = document.querySelectorAll('.card');
+    let cards = document.querySelectorAll('.new-card');
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
-            console.log(selectedCard)
+            console.log(selectedCard + 'eeeee')
             if(selectedCard == null){
                 e.stopPropagation();
                 if(card.style.backgroundImage != "url('../images/cardback.png')"){
@@ -365,6 +378,7 @@ document.addEventListener('DOMNodeInserted', () => {
                 let divClass = e.target.parentNode.className.split(' ')[1]
                 findColumnArray(divClass);
                 _placeCard(selectedPlace, e.target.parentNode);
+                console.log(selectedCard)
             }
         })
     })

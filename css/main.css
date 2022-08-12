@@ -41,7 +41,7 @@ p {
     background-size: cover;
 }
 
-.card {
+.card, .new-card {
     background-size: cover;
 }
 
