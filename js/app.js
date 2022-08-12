@@ -86,7 +86,6 @@ class Deck {
     };
 };
 
-// the moved arrays are not being pushed to the new list
 
 // Query Selector of main board Areas
 let mainDeck = document.querySelector('.main-deck');
@@ -192,6 +191,10 @@ function _placeCard(place, e){
                 let cardElem = document.createElement('div');
                 cardElem.innerText = `${currentCard.suit}${currentCard.rank}`;
                 cardElem.className = 'card';
+                cardElem.style.backgroundImage = `url('../images/${currentCard.suit}/${currentCard.rank}.png')`;
+                cardElem.style.minWidth = '130px';
+                cardElem.style.minHeight = '190px';
+                e.target.lastChild.style.minHeight = '35px';
                 e.target.append(cardElem)
                 place.push(currentCard)
             }
@@ -205,6 +208,10 @@ function _placeCard(place, e){
             let cardElem = document.createElement('div');
             cardElem.innerText = `${currentCard.suit}${currentCard.rank}`;
             cardElem.className = 'card';
+            cardElem.style.backgroundImage = `url('../images/${currentCard.suit}/${currentCard.rank}.png')`;
+            cardElem.style.minWidth = '130px';
+            cardElem.style.minHeight = '190px';
+            e.target.lastChild.style.minHeight = '35px';
             e.target.append(cardElem);
 
             place.push(currentCard);
@@ -215,9 +222,7 @@ function _placeCard(place, e){
     }else{
         selectedCard = null;
         selectedPlace = null;
-
-        /// get previous parent and index - set box shadow and all next siblings to no box shadow (target)
-        // .style.boxShadow = "0 10px 10px";
+        previousParent.childNodes[previousIdx].style.boxShadow = 'none';
         return false;
     }; 
 };  
@@ -281,8 +286,8 @@ function getSelectedCards(e){
     previousParent = e.target.parentNode;
 
     selectedCard = column.slice(idx);
-    
     e.target.style.boxShadow = "0 10px 10px";
+    console.log(selectedCard)
 }
 
 
