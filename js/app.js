@@ -55,9 +55,9 @@ class Deck {
                     let tempElem = document.createElement('div');
                     if (sortingArrayColumns[i][j].faceUp == false){
                         tempElem.style.minHeight = '20px';
-                        tempElem.style.backgroundImage = "url('../images/cardback.png')";
+                        tempElem.style.backgroundImage = "url('images/cardback.png')";
                     }else{
-                        tempElem.style.backgroundImage = `url('../images/${sortingArrayColumns[i][j].suit}/${sortingArrayColumns[i][j].rank}.png')`;
+                        tempElem.style.backgroundImage = `url('images/${sortingArrayColumns[i][j].suit}/${sortingArrayColumns[i][j].rank}.png')`;
                         tempElem.style.minWidth = '130px';
                         tempElem.style.minHeight = '190px';
                 };
@@ -171,7 +171,7 @@ function _placeCard(place, e){
                 drawDiv.style.boxShadow = 'none';
 
             }else{
-            drawDiv.style.backgroundImage = `url('../images/${solitaireDeck.cards[solitaireDeck.drawCounter-1].suit}/${solitaireDeck.cards[solitaireDeck.drawCounter-1].rank}.png')`;
+            drawDiv.style.backgroundImage = `url('images/${solitaireDeck.cards[solitaireDeck.drawCounter-1].suit}/${solitaireDeck.cards[solitaireDeck.drawCounter-1].rank}.png')`;
             drawDiv.style.boxShadow = 'none';
             };
         };
@@ -181,7 +181,7 @@ function _placeCard(place, e){
                 let cardElem = document.createElement('div');
 
                 cardElem.className = 'new-card';
-                cardElem.style.backgroundImage = `url('../images/${currentCard.suit}/${currentCard.rank}.png')`;
+                cardElem.style.backgroundImage = `url('images/${currentCard.suit}/${currentCard.rank}.png')`;
 
                 cardElem.style.minWidth = '130px';
                 cardElem.style.minHeight = '190px';
@@ -204,7 +204,7 @@ function _placeCard(place, e){
         
             let cardElem = document.createElement('div');
             cardElem.className = 'new-card';
-            cardElem.style.backgroundImage = `url('../images/${currentCard.suit}/${currentCard.rank}.png')`;
+            cardElem.style.backgroundImage = `url('images/${currentCard.suit}/${currentCard.rank}.png')`;
             cardElem.style.minWidth = '130px';
             cardElem.style.minHeight = '190px';
             if (e.childNodes.length > 0){
@@ -278,9 +278,9 @@ function clearPastColumn(){
         let tempElem = document.createElement('div');
         if (previousColumn[i].faceUp == false){
             tempElem.style.minHeight = '20px';
-            tempElem.style.backgroundImage = "url('../images/cardback.png')";
+            tempElem.style.backgroundImage = "url('images/cardback.png')";
         }else{
-            tempElem.style.backgroundImage = `url('../images/${previousColumn[i].suit}/${previousColumn[i].rank}.png')`;
+            tempElem.style.backgroundImage = `url('images/${previousColumn[i].suit}/${previousColumn[i].rank}.png')`;
             tempElem.style.minHeight = '35px';
             if (i == previousColumn.length-1){
                 tempElem.style.minWidth = '130px';
@@ -357,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.addEventListener('click', (e) => {
             if(selectedCard == null){
                 e.stopPropagation();
-                if(card.style.backgroundImage != "url('../images/cardback.png')"){
+                if(card.style.backgroundImage != "url('images/cardback.png')"){
                     getSelectedCards(e);
                 };
             }else if(selectedCard != null){
@@ -375,7 +375,7 @@ document.addEventListener('DOMNodeInserted', () => {
         card.addEventListener('click', (e) => {
             if(selectedCard == null){
                 e.stopPropagation();
-                if(card.style.backgroundImage != "url('../images/cardback.png')"){
+                if(card.style.backgroundImage != "url('images/cardback.png')"){
                     getSelectedCards(e);
                 };
             }else if(selectedCard != null){
