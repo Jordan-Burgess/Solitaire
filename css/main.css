@@ -14,6 +14,10 @@ p {
 
 }
 
+.sort-suit1, .sort-suit2, .sort-suit3, .sort-suit4 {
+    border: solid black 2px;
+}
+
 .deck {
     background-color: rgba(0, 0, 0, 0.2);
     margin: 5px;
@@ -22,9 +26,8 @@ p {
 }
 
 .sorting {
-    background-color: grey;
     margin: 5px;
-    border: solid black 2px;
+    
     min-width: 130px;
     min-height: 190px;
 }

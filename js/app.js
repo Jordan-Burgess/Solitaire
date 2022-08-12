@@ -57,7 +57,7 @@ class Deck {
             for (let j=0; j<sortingArrayColumns[i].length; j++){
                     let tempElem = document.createElement('div');
                     if (sortingArrayColumns[i][j].faceUp == false){
-                        tempElem.innerText = `Face Down`;
+                        tempElem.style.minHeight = '20px';
                         tempElem.style.backgroundImage = "url('../images/cardback.png')";
                     }else{
                         tempElem.style.backgroundImage = `url('../images/${sortingArrayColumns[i][j].suit}/${sortingArrayColumns[i][j].rank}.png')`;
@@ -189,7 +189,6 @@ function _placeCard(place, e){
             for(let i=0; i<selectedCard.length; i++){
                 let currentCard = selectedCard[i];
                 let cardElem = document.createElement('div');
-                cardElem.innerText = `${currentCard.suit}${currentCard.rank}`;
                 cardElem.className = 'card';
                 cardElem.style.backgroundImage = `url('../images/${currentCard.suit}/${currentCard.rank}.png')`;
                 cardElem.style.minWidth = '130px';
@@ -208,7 +207,6 @@ function _placeCard(place, e){
             currentCard.faceUp = true;
         
             let cardElem = document.createElement('div');
-            cardElem.innerText = `${currentCard.suit}${currentCard.rank}`;
             cardElem.className = 'card';
             cardElem.style.backgroundImage = `url('../images/${currentCard.suit}/${currentCard.rank}.png')`;
             cardElem.style.minWidth = '130px';
@@ -245,6 +243,9 @@ function _canPlaceCard(place){
             return true;
         };
     }else if(place == sortSuit1 || place == sortSuit2 || place == sortSuit3 || place == sortSuit4){
+        if (Array.isArray(selectedCard)){
+            if(selectedCard.length > 1) return false
+        }
         if (place.length == 0 && cardRank == 'A'){
             return true;
         }else if (place.length > 0 && cardSuit == place[place.length-1].suit && rank.indexOf(cardRank) == rank.indexOf(place[place.length-1].rank) + 1){
@@ -266,10 +267,9 @@ function clearPastColumn(){
     for(let i=0; i<previousColumn.length; i++){
         let tempElem = document.createElement('div');
         if (previousColumn[i].faceUp == false){
-            tempElem.innerText = `Face Down`;
+            tempElem.style.minHeight = '20px';
             tempElem.style.backgroundImage = "url('../images/cardback.png')";
         }else{
-            tempElem.innerText = `${previousColumn[i].suit}${previousColumn[i].rank}`; 
             tempElem.style.backgroundImage = `url('../images/${previousColumn[i].suit}/${previousColumn[i].rank}.png')`;
             tempElem.style.minHeight = '35px';
             if (i == previousColumn.length-1){
@@ -327,6 +327,7 @@ sortingColumnDivs.forEach(place => {
             let divClass = e.target.className.split(' ')[1]
             findColumnArray(divClass);
             _placeCard(selectedPlace, e.target);
+            console.log(selectedCard)
         }
     });
 });
@@ -335,12 +336,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let cards = document.querySelectorAll('.card');
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
+            console.log(selectedCard)
             if(selectedCard == null){
                 e.stopPropagation();
                 if(card.style.backgroundImage != "url('../images/cardback.png')"){
                     getSelectedCards(e);
                 }
-            }else{
+            }else if(selectedCard != null){
                 let divClass = e.target.parentNode.className.split(' ')[1]
                 findColumnArray(divClass);
                 _placeCard(selectedPlace, e.target.parentNode);
@@ -353,12 +355,13 @@ document.addEventListener('DOMNodeInserted', () => {
     let cards = document.querySelectorAll('.card');
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
+            console.log(selectedCard)
             if(selectedCard == null){
                 e.stopPropagation();
                 if(card.style.backgroundImage != "url('../images/cardback.png')"){
                     getSelectedCards(e);
                 }
-            }else{
+            }else if(selectedCard != null){
                 let divClass = e.target.parentNode.className.split(' ')[1]
                 findColumnArray(divClass);
                 _placeCard(selectedPlace, e.target.parentNode);
