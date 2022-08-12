@@ -216,6 +216,9 @@ function _placeCard(place, e){
             place.push(currentCard);
         };
         selectedPlace = null;
+        if(checkWin()){
+            console.log('You Win')
+        };
         return true;
 
     }else{
@@ -305,7 +308,20 @@ function getSelectedCards(e){
     e.target.style.boxShadow = "0 10px 10px";
 };
 
-
+function checkWin(){
+    for(let i=0; i<sortingArrayColumns.length;i++){
+        for(let j=0; j<sortingArrayColumns[i];j++){
+            if(sortingArrayColumns[i][j].faceUp = false){
+                return false;
+            };
+        };
+    };
+    if (solitaireDeck.cards.length == 1 && solitaireDeck.drawCounter == solitaireDeck.cards.length-1){
+        return true;
+    }else{
+        return false;
+    }
+};
 
 makeSolitaireDeck();
 solitaireDeck.shuffle();
