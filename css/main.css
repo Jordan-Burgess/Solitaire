@@ -10,7 +10,6 @@ p {
 }
 
 .game-board {
-    /* background-image: url('./images/faces.png'); */
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: 200px auto;

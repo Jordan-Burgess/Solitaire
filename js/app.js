@@ -22,23 +22,20 @@ class Deck {
     };
     draw(){
         if (this.drawCounter == this.cards.length){
-            drawDiv.innerText = '';
             drawDiv.style.backgroundImage = 'none';
-            console.log("Going back to the beginning");
             this.drawCounter = 0;
             mainDeck.style.backgroundImage = "url('../images/cardback.png')";
         }else{
             if(this.drawCounter >= 0 && this.drawCounter < this.cards.length){
-                console.log(this.drawCounter);
                 drawDiv.style.backgroundImage = `url('../images/${this.cards[this.drawCounter].suit}/${this.cards[this.drawCounter].rank}.png')`;
                 if(this.drawCounter == this.cards.length-1){
                     mainDeck.style.backgroundImage = 'none';
-                }
-            }
+                };
+            };
             
             this.drawCounter++;
-        }
-    }
+        };
+    };
     setUp(columns){
         for (let i=7;i>=1;i--){
             for(let j=1;j<=i;j++){
@@ -47,7 +44,7 @@ class Deck {
                 this.cards.splice(this.drawCounter-1, 1);
                 if (j==i){
                     currentCard.faceUp = true;
-                }
+                };
                 let variable = `column${i}`;
                 eval(variable).push(currentCard);
                 this.drawCounter--;
@@ -63,29 +60,21 @@ class Deck {
                         tempElem.style.backgroundImage = `url('../images/${sortingArrayColumns[i][j].suit}/${sortingArrayColumns[i][j].rank}.png')`;
                         tempElem.style.minWidth = '130px';
                         tempElem.style.minHeight = '190px';
-
-                }
+                };
                 tempElem.className = 'card';
                 columns[i].appendChild(tempElem);
-            }
-        }
+            };
+        };
         this.drawCounter = 0;
-        drawDiv.innerText = '';
-        drawDiv.style.backgroundImage = 'none';
-        
-    }
+        drawDiv.style.backgroundImage = 'none'; 
+    };
     selectCardFromDeck(){
         if(this.drawCounter > 0){
             selectedCard = this.cards[this.drawCounter-1];
-            console.log(selectedCard);
             drawDiv.style.boxShadow = "0 10px 10px";
-
-        }else{
-            console.log('No Cards Drawn');
         };
     };
 };
-
 
 // Query Selector of main board Areas
 let mainDeck = document.querySelector('.main-deck');
@@ -132,7 +121,7 @@ function makeSolitaireDeck(){
 };
 
 function findColumnArray(divClass) {
-    let place = divClass
+    let place = divClass;
     switch(place){
         case 'sort-suit1':
             selectedPlace = sortSuit1;
@@ -176,8 +165,7 @@ function _placeCard(place, e){
             solitaireDeck.cards.splice(solitaireDeck.drawCounter-1, 1); 
             solitaireDeck.drawCounter--;
             if (solitaireDeck.drawCounter == 0){
-                drawDiv.innerText = '';
-                drawDiv.style.backgroundImage = 'none'
+                drawDiv.style.backgroundImage = 'none';
                 drawDiv.style.boxShadow = 'none';
 
             }else{
@@ -198,19 +186,15 @@ function _placeCard(place, e){
                 if (e.childNodes.length > 0){
                     if (e.className.split(' ')[1] == 'sort-suit1' || e.className.split(' ')[1] == 'sort-suit2' || e.className.split(' ')[1] == 'sort-suit3' || e.className.split(' ')[1] == 'sort-suit4'){
                         e.lastChild.style.minHeight = '1px';
-                    }
-                    else{
-                    e.lastChild.style.minHeight = '35px';
-                    }
-                } 
-                console.log(e)
-                
-                e.append(cardElem)
-                place.push(currentCard)
-            }
+                    }else{
+                        e.lastChild.style.minHeight = '35px';
+                    };
+                };
+                e.append(cardElem);
+                place.push(currentCard);
+            };
             selectedCard = null;
-            console.log('success')
-            clearPastColumn()
+            clearPastColumn();
         }else{
             let currentCard = selectedCard;
             selectedCard = null;
@@ -226,12 +210,11 @@ function _placeCard(place, e){
                     e.lastChild.style.minHeight = '1px';
                 }else{
                     e.lastChild.style.minHeight = '35px';
-                }
-            }
+                };
+            };
             e.append(cardElem);
-
             place.push(currentCard);
-        }
+        };
         selectedPlace = null;
         return true;
 
@@ -244,14 +227,14 @@ function _placeCard(place, e){
 };  
 
 function _canPlaceCard(place){
-    let cardRank
-    let cardSuit
-    let cardColor
-    let aceClass
+    let cardRank;
+    let cardSuit;
+    let cardColor;
+    let aceClass;
 
     if (previousParent != null){
-        aceClass = previousParent.className.split(' ')[1]
-    }
+        aceClass = previousParent.className.split(' ')[1];
+    };
 
     cardRank = selectedCard.rank || selectedCard[0].rank;
     cardSuit = selectedCard.suit || selectedCard[0].suit;
@@ -259,15 +242,15 @@ function _canPlaceCard(place){
 
     if (place == column1 || place == column2 || place == column3 || place == column4 || place == column5 || place == column6 || place == column7){
         if (aceClass == 'sort-suit1' || aceClass == 'sort-suit2' || aceClass == 'sort-suit3' || aceClass == 'sort-suit4'){
-            if(selectedCard.length > 1) return false
-        }
+            if(selectedCard.length > 1) return false;
+        };
         if (place.length == 0 || cardColor != place[place.length-1].color && rank.indexOf(cardRank) == rank.indexOf(place[place.length-1].rank) - 1){
             return true;
         };
     }else if(place == sortSuit1 || place == sortSuit2 || place == sortSuit3 || place == sortSuit4){
         if (Array.isArray(selectedCard)){
-            if(selectedCard.length > 1) return false
-        }
+            if(selectedCard.length > 1) return false;
+        };
         if (place.length == 0 && cardRank == 'A'){
             return true;
         }else if (place.length > 0 && cardSuit == place[place.length-1].suit && rank.indexOf(cardRank) == rank.indexOf(place[place.length-1].rank) + 1){
@@ -281,11 +264,11 @@ function clearPastColumn(){
     previousColumn.splice(previousIdx);
     if (previousColumn.length > 0){
         previousColumn[previousColumn.length-1].faceUp = true;
-    }
+    };
     
     while(previousParent.firstChild){
-        previousParent.removeChild(previousParent.lastChild)
-    }
+        previousParent.removeChild(previousParent.lastChild);
+    };
     for(let i=0; i<previousColumn.length; i++){
         let tempElem = document.createElement('div');
         if (previousColumn[i].faceUp == false){
@@ -297,15 +280,15 @@ function clearPastColumn(){
             if (i == previousColumn.length-1){
                 tempElem.style.minWidth = '130px';
                 tempElem.style.minHeight = '190px';
-            }
-        }
+            };
+        };
         tempElem.className = 'new-card';
         previousParent.appendChild(tempElem);
-    }
+    };
     previousColumn = null;
     previousIdx = null;
     previousParent = null;
-}
+};
     
 function getSelectedCards(e){
     let divClass = e.target.parentNode.className.split(' ')[1];
@@ -320,16 +303,13 @@ function getSelectedCards(e){
 
     selectedCard = column.slice(idx);
     e.target.style.boxShadow = "0 10px 10px";
-    console.log(selectedCard)
-}
+};
 
 
 
 makeSolitaireDeck();
 solitaireDeck.shuffle();
 solitaireDeck.setUp(sortingColumnDivs);
-console.log(solitaireDeck)
-
 
 
 // EVENT LISTENERS
@@ -346,11 +326,10 @@ drawDiv.addEventListener('click', () =>{
 sortingColumnDivs.forEach(place => {
     place.addEventListener('click', (e) => {
         if(selectedCard != null){
-            let divClass = e.target.className.split(' ')[1]
+            let divClass = e.target.className.split(' ')[1];
             findColumnArray(divClass);
             _placeCard(selectedPlace, e.target);
-            console.log(selectedCard)
-        }
+        };
     });
 });
 
@@ -358,19 +337,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let cards = document.querySelectorAll('.card');
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
-            console.log(selectedCard + 'success')
             if(selectedCard == null){
                 e.stopPropagation();
                 if(card.style.backgroundImage != "url('../images/cardback.png')"){
                     getSelectedCards(e);
-                }
+                };
             }else if(selectedCard != null){
-                let divClass = e.target.parentNode.className.split(' ')[1]
+                let divClass = e.target.parentNode.className.split(' ')[1];
                 findColumnArray(divClass);
                 _placeCard(selectedPlace, e.target.parentNode);
-                console.log(selectedCard)
-            }
-        })
+            };
+        });
     });
 });
 
@@ -378,18 +355,16 @@ document.addEventListener('DOMNodeInserted', () => {
     let cards = document.querySelectorAll('.new-card');
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
-            console.log(selectedCard + 'eeeee')
             if(selectedCard == null){
                 e.stopPropagation();
                 if(card.style.backgroundImage != "url('../images/cardback.png')"){
                     getSelectedCards(e);
-                }
+                };
             }else if(selectedCard != null){
-                let divClass = e.target.parentNode.className.split(' ')[1]
+                let divClass = e.target.parentNode.className.split(' ')[1];
                 findColumnArray(divClass);
                 _placeCard(selectedPlace, e.target.parentNode);
-                console.log(selectedCard)
-            }
-        })
-    })
-})
+            };
+        });
+    });
+});
