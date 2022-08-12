@@ -24,7 +24,7 @@ class Deck {
         if (this.drawCounter == this.cards.length){
             drawDiv.style.backgroundImage = 'none';
             this.drawCounter = 0;
-            mainDeck.style.backgroundImage = "url('../images/cardback.png')";
+            mainDeck.style.backgroundImage = "url('images/cardback.png')";
         }else{
             if(this.drawCounter >= 0 && this.drawCounter < this.cards.length){
                 drawDiv.style.backgroundImage = `url('../images/${this.cards[this.drawCounter].suit}/${this.cards[this.drawCounter].rank}.png')`;
